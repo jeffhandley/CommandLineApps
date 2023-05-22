@@ -25,7 +25,7 @@ internal class Program
             }
         };
 
-        var cliArgs = Cli.Parse(args);
+        var cliArgs = cli.Parse(args);
 
         if (cliArgs.Errors.Any())
         {

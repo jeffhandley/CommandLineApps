@@ -10,7 +10,7 @@ namespace System.CommandLine
 {
     internal class Cli : IEnumerable<CliSymbol>
     {
-        internal static ParseResult Parse(string[] args)
+        internal ParseResult Parse(string[] args)
         {
             throw new NotImplementedException();
         }
@@ -30,7 +30,7 @@ namespace System.CommandLine
 
     internal class ParseResult
     {
-        internal IEnumerable<ParseError> Errors;
+        internal IEnumerable<ParseError> Errors = new List<ParseError>();
 
         internal T GetValue<T>(string key)
         {
@@ -40,12 +40,14 @@ namespace System.CommandLine
 
     internal class ParseError
     {
+        public ParseError(string message) => Message = message;
+
         public string Message { get; internal set; }
     }
 
     abstract class CliSymbol
     {
-        public string Key { get; set; }
+        public string? Key { get; init; }
     }
 
     abstract class CliSymbol<T> : CliSymbol
@@ -53,7 +55,7 @@ namespace System.CommandLine
         public T? Value { get; internal set; }
         public T? DefaultValue { get; init; }
 
-        public IList<CliSymbolValidator<T>> Validators { get; } = new List<CliSymbolValidator>();
+        public IList<CliSymbolValidator<T>> Validators { get; } = new List<CliSymbolValidator<T>>();
     }
 
     internal class CliSymbolValidator<T>
@@ -90,5 +92,11 @@ namespace System.CommandLine
 
 namespace System.CommandLine.Validation
 {
-    internal class ExistingFilesOnly : CliSymbolValidator<FileInfo> { }
+    internal class ExistingFilesOnly : CliSymbolValidator<FileInfo>
+    {
+        public ExistingFilesOnly() : base(f => f.Exists, "The specified file does not exist")
+        {
+            
+        }
+    }
 }
