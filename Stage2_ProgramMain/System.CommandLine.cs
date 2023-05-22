@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace System.CommandLine
 {
@@ -12,10 +13,7 @@ namespace System.CommandLine
 
         public string? Description { get; set; }
 
-        internal ParseResult Parse(string[] args)
-        {
-            throw new NotImplementedException();
-        }
+        internal void Parse(string[] args) { }
 
         public void Add(CliSymbol symbol) { }
 
@@ -39,14 +37,27 @@ namespace System.CommandLine
             throw new NotImplementedException();
         }
 
-        public void ProvideHelp(params string[] options) { }
-        public void ProvideCompletion(string directive = "[complete]") { }
-        public void ProvideErrorHandling(int exitCode = 100) { }
-    }
+        public HelpOption AddHelpOption(string name, params string[] aliases)
+        {
+            return (HelpOption)AddOption(new HelpOption(name, aliases));
+        }
 
-    internal class ParseResult
-    {
+        public VersionOption AddVersionOption(string name, string[]? aliases = null)
+        {
+            return (VersionOption)AddOption(new VersionOption(name, aliases ?? new string[0]));
+        }
+
+        public CompletionDirective AddCompletionDirective(string directive = "[complete]")
+        {
+            var completion = new CompletionDirective(directive);
+            Add(completion);
+
+            return completion;
+        }
+
         internal IEnumerable<ParseError> Errors = new List<ParseError>();
+
+        public bool HasErrors { get => Errors.Any(); }
 
         internal T GetValue<T>(string key)
         {
@@ -109,6 +120,36 @@ namespace System.CommandLine
         {
             this.Description = description;
         }
+    }
+
+    class HelpOption : CliOption<bool>
+    {
+        public HelpOption(string name, params string[] aliases)
+            : base(name, aliases, "Get help for this application") { }
+
+        public bool Requested { get => Value; }
+
+        public void Show(Cli cli) { }
+    }
+
+    class VersionOption : CliOption<bool>
+    {
+        public VersionOption(string name, params string[] aliases)
+            : base(name, aliases, "Get the version of this application") { }
+
+        public bool Requested { get => Value; }
+
+        public void Show(Cli cli) { }
+    }
+
+    class CompletionDirective : CliSymbol<bool>
+    {
+        public CompletionDirective(string name = "[complete]")
+            : base() { }
+
+        public bool Requested { get => Value; }
+
+        public void Show(Cli cli) { }
     }
 }
 

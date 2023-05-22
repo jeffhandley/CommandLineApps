@@ -8,19 +8,19 @@
     "net7.0": []
   },
   "packageFolders": {
-    "/Users/jeffhandley/.nuget/packages/": {}
+    "C:\\Users\\jeffhand\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jeffhandley/git/jeffhandley/CommandLineApps/Stage1_ProgramMain/Stage1_ProgramMain.csproj",
+      "projectUniqueName": "C:\\Users\\jeffhand\\git\\jeffhandley\\CommandLineApps\\Stage1_ProgramMain\\Stage1_ProgramMain.csproj",
       "projectName": "Stage1_ProgramMain",
-      "projectPath": "/Users/jeffhandley/git/jeffhandley/CommandLineApps/Stage1_ProgramMain/Stage1_ProgramMain.csproj",
-      "packagesPath": "/Users/jeffhandley/.nuget/packages/",
-      "outputPath": "/Users/jeffhandley/git/jeffhandley/CommandLineApps/Stage1_ProgramMain/obj/",
+      "projectPath": "C:\\Users\\jeffhand\\git\\jeffhandley\\CommandLineApps\\Stage1_ProgramMain\\Stage1_ProgramMain.csproj",
+      "packagesPath": "C:\\Users\\jeffhand\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\jeffhand\\git\\jeffhandley\\CommandLineApps\\Stage1_ProgramMain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/jeffhandley/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\jeffhand\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -59,7 +59,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.100-rc.2.22477.23/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.105\\RuntimeIdentifierGraph.json"
       }
     }
   }

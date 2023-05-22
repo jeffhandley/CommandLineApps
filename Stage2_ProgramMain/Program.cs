@@ -20,11 +20,29 @@ internal class Program
             new CliSymbolValidator<FileInfo>(f => f.Extension.Equals(".json", StringComparison.OrdinalIgnoreCase), "The config file must have a .json extension")
         }});
 
-        cli.ProvideHelp("--help", "-h", "-?");
-        cli.ProvideCompletion("[complete]");
-        cli.ProvideErrorHandling(exitCode: 100);
+        var help = cli.AddHelpOption("--help", "-h", "-?");
+        var version = cli.AddVersionOption("--version");
+        var completion = cli.AddCompletionDirective("[complete]");
 
         cli.Parse(args);
+
+        if (help.Requested || cli.HasErrors)
+        {
+            help.Show(cli);
+            return;
+        }
+
+        if (version.Requested)
+        {
+            version.Show(cli);
+            return;
+        }
+
+        if (completion.Requested)
+        {
+            completion.Show(cli);
+            return;
+        }
 
         GenerateRepoAutomation(org.Value, repo.Value, config.Value, target.Value);
     }
