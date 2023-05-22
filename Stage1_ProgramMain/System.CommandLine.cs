@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.CommandLine;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,6 +52,15 @@ namespace System.CommandLine
     {
         public T? Value { get; internal set; }
         public T? DefaultValue { get; init; }
+
+        public IList<CliSymbolValidator<T>> Validators { get; } = new List<CliSymbolValidator>();
+    }
+
+    internal class CliSymbolValidator<T>
+    {
+        public CliSymbolValidator(Func<T, bool> value, string errorMessage)
+        {
+        }
     }
 
     class CliOption<T> : CliSymbol<T>
@@ -76,4 +86,9 @@ namespace System.CommandLine
             this.v = v;
         }
     }
+}
+
+namespace System.CommandLine.Validation
+{
+    internal class ExistingFilesOnly : CliSymbolValidator<FileInfo> { }
 }

@@ -1,5 +1,7 @@
 ﻿namespace Stage1_ProgramMain;
+
 using System.CommandLine;
+using System.CommandLine.Validation;
 
 internal class Program
 {
@@ -13,7 +15,14 @@ internal class Program
             new CliOption<string>("--org", new[] { "-o", "--owner" }, "The org/owner of the repository.") { DefaultValue = "dotnet" },
             new CliOption<string>("--repo", new[] { "-r" }, "The name of the repository to generate automation scripts for"),
             new CliOption<DirectoryInfo>("--output", new[] { "-o" }, "The output directory for the generated automation scripts") { Key = "target" },
-            new CliArgument<FileInfo>("The path to the area pods configuration file") { Key = "config" }
+            new CliArgument<FileInfo>("The path to the area pods configuration file")
+            {
+                Key = "config",
+                Validators = {
+                    new ExistingFilesOnly(),
+                    new CliSymbolValidator<FileInfo>(f => f.Extension.Equals(".json", StringComparison.OrdinalIgnoreCase), "The config file must have a .json extension")
+                }
+            }
         };
 
         var cliArgs = Cli.Parse(args);
