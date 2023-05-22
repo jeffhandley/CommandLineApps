@@ -19,6 +19,16 @@ namespace System.CommandLine
 
         public void Add(CliSymbol symbol) { }
 
+        public CliOption<T> AddOption<T>(CliOption<T> option)
+        {
+            return option;
+        }
+
+        public CliArgument<T> AddArgument<T>(CliArgument<T> argument)
+        {
+            return argument;
+        }
+
         IEnumerator<CliSymbol> IEnumerable<CliSymbol>.GetEnumerator()
         {
             throw new NotImplementedException();
@@ -28,6 +38,10 @@ namespace System.CommandLine
         {
             throw new NotImplementedException();
         }
+
+        public void ProvideHelp(params string[] options) { }
+        public void ProvideCompletion(string directive = "[complete]") { }
+        public void ProvideErrorHandling(int exitCode = 100) { }
     }
 
     internal class ParseResult
@@ -54,7 +68,11 @@ namespace System.CommandLine
 
     abstract class CliSymbol<T> : CliSymbol
     {
-        public T? Value { get; internal set; }
+#nullable disable
+        internal CliSymbol() { }
+#nullable restore
+
+        public T Value { get; internal set; }
         public T? DefaultValue { get; init; }
 
         public IList<CliSymbolValidator<T>> Validators { get; } = new List<CliSymbolValidator<T>>();
@@ -69,25 +87,27 @@ namespace System.CommandLine
 
     class CliOption<T> : CliSymbol<T>
     {
-        private string v1;
-        private string[] strings;
-        private string v2;
+        private string Name;
+        private string[] Aliases;
+        private string Description;
 
-        public CliOption(string v1, string[] strings, string v2)
+        public CliOption(string name, string[] aliases, string description)
         {
-            this.v1 = v1;
-            this.strings = strings;
-            this.v2 = v2;
+            this.Name = name;
+            this.Aliases = aliases;
+            this.Description = description;
         }
+
+        public CliOption(string name, string alias, string description) : this(name, new[] { alias }, description) { }
     }
 
     class CliArgument<T> : CliSymbol<T>
     {
-        private string v;
+        private string Description;
 
-        public CliArgument(string v)
+        public CliArgument(string description)
         {
-            this.v = v;
+            this.Description = description;
         }
     }
 }
@@ -98,7 +118,7 @@ namespace System.CommandLine.Validation
     {
         public ExistingFilesOnly() : base(f => f.Exists, "The specified file does not exist")
         {
-            
+
         }
     }
 }

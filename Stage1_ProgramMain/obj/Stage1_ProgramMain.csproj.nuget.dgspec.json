@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jeffhand\\git\\jeffhandley\\CommandLineApps\\Stage1_ProgramMain\\Stage1_ProgramMain.csproj": {}
+    "/Users/jeffhandley/git/jeffhandley/CommandLineApps/Stage1_ProgramMain/Stage1_ProgramMain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jeffhand\\git\\jeffhandley\\CommandLineApps\\Stage1_ProgramMain\\Stage1_ProgramMain.csproj": {
+    "/Users/jeffhandley/git/jeffhandley/CommandLineApps/Stage1_ProgramMain/Stage1_ProgramMain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jeffhand\\git\\jeffhandley\\CommandLineApps\\Stage1_ProgramMain\\Stage1_ProgramMain.csproj",
+        "projectUniqueName": "/Users/jeffhandley/git/jeffhandley/CommandLineApps/Stage1_ProgramMain/Stage1_ProgramMain.csproj",
         "projectName": "Stage1_ProgramMain",
-        "projectPath": "C:\\Users\\jeffhand\\git\\jeffhandley\\CommandLineApps\\Stage1_ProgramMain\\Stage1_ProgramMain.csproj",
-        "packagesPath": "C:\\.tools\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jeffhand\\git\\jeffhandley\\CommandLineApps\\Stage1_ProgramMain\\obj\\",
+        "projectPath": "/Users/jeffhandley/git/jeffhandley/CommandLineApps/Stage1_ProgramMain/Stage1_ProgramMain.csproj",
+        "packagesPath": "/Users/jeffhandley/.nuget/packages/",
+        "outputPath": "/Users/jeffhandley/git/jeffhandley/CommandLineApps/Stage1_ProgramMain/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\jeffhand\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/jeffhandley/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -60,7 +53,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.100-rc.2.22477.23/RuntimeIdentifierGraph.json"
         }
       }
     }
