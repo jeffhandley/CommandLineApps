@@ -1,20 +1,139 @@
-﻿using System;
-using System.CommandLine;
+﻿// apply-labels --org dotnet --repo runtime --issue 40074 area-System.Security untriaged --dry-run
 
-// apply-labels --org dotnet --repo runtime --issue 40074 area-System.Security untriaged --dry-run
-var cli = CliParser.Parse(args);
-string org = cli.GetOption<string>("org");
-string repo = cli.GetOption<string>("repo");
-int? issue = cli.GetOption<int?>("issue");
-int? pr = cli.GetOption<int?>("pr");
-IEnumerable<string> labels = cli.GetArguments<string>();
-bool isDryRun = cli.HasOption("dry-run");
+using Octokit;
 
-if (issue is not null)
+static void ShowHelp()
 {
-    // Add the labels to the specified issues
+    Console.WriteLine("Usage: apply-labels --org <org> --repo <repo> (--issue <issue> | --pr <pr>) [--dry-run] <labels>...");
+    Console.WriteLine("  --org <org>      The GitHub organization");
+    Console.WriteLine("  --repo <repo>    The GitHub repository");
+    Console.WriteLine("  --issue <issue>  The GitHub issue number");
+    Console.WriteLine("  --pr <pr>        The GitHub pull request number");
+    Console.WriteLine("  --dry-run        Don't actually apply the labels");
+    Console.WriteLine("  <labels>...      The labels to apply");
 }
-else if (pr is not null)
+
+static void ShowArgumentError(string arg)
 {
-    // Add the labels to the specified PR
+    throw new ArgumentException($"Unknown argument {arg}");
+}
+
+string org = string.Empty;
+string repo = string.Empty;
+int? issue = null;
+int? pr = null;
+List<string> labels = new();
+bool dryRun = false;
+
+// Loop through arguments and parse them
+for (int i = 0; i < args.Length; i++)
+{
+    if (args[i].StartsWith("-") && !args[i].StartsWith("--"))
+    {
+        foreach (var c in args[i].Substring(1))
+        {
+            switch (c)
+            {
+                case 'o':
+                    org = args[++i];
+                    break;
+                case 'r':
+                    repo = args[++i];
+                    break;
+                case 'i':
+                    issue = int.Parse(args[++i]);
+                    break;
+                case 'p':
+                    pr = int.Parse(args[++i]);
+                    break;
+                case 'd':
+                    dryRun = true;
+                    break;
+                case 'h':
+                    ShowHelp();
+                    return;
+                default:
+                    ShowArgumentError(c.ToString());
+                    return;
+            }
+        }
+    }
+    else if (args[i].StartsWith("--"))
+    {
+        switch (args[i])
+        {
+            case "--org":
+                org = args[++i];
+                break;
+            case "--repo":
+                repo = args[++i];
+                break;
+            case "--issue":
+                issue = int.Parse(args[++i]);
+                break;
+            case "--pr":
+                pr = int.Parse(args[++i]);
+                break;
+            case "--dry-run":
+                dryRun = true;
+                break;
+            case "--help":
+                ShowHelp();
+                return;
+            default:
+                ShowArgumentError(args[i]);
+                return;
+        }
+    }
+    else
+    {
+        labels.Add(args[i]);
+    }
+}
+
+if (string.IsNullOrEmpty(org))
+{
+    throw new ArgumentException("Missing --org argument");
+}
+
+if (string.IsNullOrEmpty(repo))
+{
+    throw new ArgumentException("Missing --repo argument");
+}
+
+if (!issue.HasValue && !pr.HasValue)
+{
+    throw new ArgumentException("Missing --issue or --pr argument");
+}
+
+if (labels.Count == 0)
+{
+    throw new ArgumentException("Missing labels");
+}
+
+if (issue.HasValue)
+{
+    if (!dryRun)
+    {
+        var client = new GitHubClient(new ProductHeaderValue("apply-labels"));
+        var issueLabels = await client.Issue.Labels.AddToIssue(org, repo, issue.Value, labels.ToArray());
+        Console.WriteLine($"Added {string.Join(", ", issueLabels.Select(l => l.Name))} to issue #{issue.Value}");
+    }
+    else
+    {
+        Console.WriteLine($"Would have added {string.Join(", ", labels)} to issue #{issue.Value}");
+    }
+}
+else if (pr.HasValue)
+{
+    if (!dryRun)
+    {
+        var client = new GitHubClient(new ProductHeaderValue("apply-labels"));
+        var prLabels = await client.Issue.Labels.AddToIssue(org, repo, pr.Value, labels.ToArray());
+        Console.WriteLine($"Added {string.Join(", ", prLabels.Select(l => l.Name))} to pull request #{pr.Value}");
+    }
+    else
+    {
+        Console.WriteLine($"Would have added {string.Join(", ", labels)} to pull request #{pr.Value}");
+    }
 }

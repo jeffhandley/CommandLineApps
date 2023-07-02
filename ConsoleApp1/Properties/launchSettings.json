@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ConsoleApp1": {
+      "commandName": "Project",
+      "commandLineArgs": "--org dotnet --repo runtime area-System.Security untriaged --issue 40074 --dry-run"
+    }
+  }
+}
