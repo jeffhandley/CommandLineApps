@@ -30,9 +30,7 @@ var pr = issueOrPr.AddOption<int?>("pr", 'p');
 var labels = cli.AddArgument<string>("labels", minArgs: 1);
 var dryrun = cli.AddOption("dry-run", 'd');
 
-if (cli.Invoke(args, new() {
+cli.Invoke(args, new() {
     { add, cmd => AddLabels(cmd.GetOption(org), cmd.GetOption(repo), cmd.GetOption(issue), cmd.GetOption(pr), cmd.GetArgument(labels), cmd.GetOption(dryrun)) },
     { remove, cmd => RemoveLabels(cmd.GetOption(org), cmd.GetOption(repo), cmd.GetOption(issue), cmd.GetOption(pr), cmd.GetArgument(labels), cmd.GetOption(dryrun)) }
-}, out int exitCode)) return exitCode;
-
-return 1;
+});
