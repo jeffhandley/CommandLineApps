@@ -17,6 +17,7 @@ namespace System.CommandLine
         public T GetOption<T>(string name, char abbr) => default(T)!;
         public bool HasOption(string name) => false;
         public bool HasOption(string name, char abbr) => false;
-        public IEnumerable<T> GetArgument<T>() => Enumerable.Empty<T>();
+        public IEnumerable<string> GetArgument(string name, ushort minArgs = 0, ushort maxArgs = 0) => Enumerable.Empty<string>();
+        public IEnumerable<T> GetArgument<T>(ushort minArgs = 0, ushort maxArgs = 0) => Enumerable.Empty<T>();
     }
 }

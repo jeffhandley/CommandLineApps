@@ -6,6 +6,20 @@ using System.Threading.Tasks;
 
 namespace System.CommandLine
 {
+    public class Cli
+    {
+        public CliCommand AddCommand(string name) => new CliCommand(name);
+        public CliOption<T> AddOption<T>(CliOption<T> option) => option;
+        public CliDirective AddDirective(CliDirective directive) => directive;
+    }
+
+    public class CliCommand : Cli
+    {
+        public string Name { get; set; }
+
+        public CliCommand(string name) => Name = name;
+    }
+
     public class CliOption<T>
     {
         public string Name { get; set; }
@@ -35,9 +49,23 @@ namespace System.CommandLine
         public CliDirective(string name) => Name = name;
     }
 
+    public enum CliGroupType
+    {
+        Any,
+        All,
+        MutuallyExclusive
+    }
+
+    public class CliGroup : Cli
+    {
+        public CliGroupType Type { get; set; }
+        public CliGroup(CliGroupType type) => Type = type;
+    }
+
     public class CliParser
     {
         public static CliParseResult Parse(string[] args) => default(CliParseResult);
+        public static CliParseResult Parse(string[] args, Cli cli) => default(CliParseResult);
     }
 
     public struct CliParseResult
@@ -49,10 +77,12 @@ namespace System.CommandLine
             _hasErrors = errors.Any();
         }
 
-        public bool HasErrors { get => _hasErrors; }        
+        public bool HasErrors { get => _hasErrors; }
         public T GetOption<T>(CliOption<T> option) => default(T)!;
         public T GetOption<T>(string name) => default(T)!;
         public T GetOption<T>(string name, char abbr) => default(T)!;
+        public bool HasCommand(CliCommand command) => false;
+        public bool HasCommand(string name) => false;
         public bool HasOption<T>(CliOption<T> option) => false;
         public bool HasOption(string name) => false;
         public bool HasOption(string name, char abbr) => false;

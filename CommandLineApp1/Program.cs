@@ -1,14 +1,13 @@
-﻿using System;
-using System.CommandLine;
+﻿using System.CommandLine;
 
 // apply-labels --org dotnet --repo runtime --issue 40074 area-System.Security untriaged --dry-run
-var cli = CliParser.Parse(args);
-var org = cli.GetOption<string>("org", 'o');
-var repo = cli.GetOption<string>("repo", 'r');
-var issue = cli.GetOption<int?>("issue", 'i');
-var pr = cli.GetOption<int?>("pr", 'p');
-var labels = cli.GetArgument<string>();
-var dryrun = cli.HasOption("dry-run", 'd');
+var cmd = CliParser.Parse(args);
+var org = cmd.GetOption<string>("org", 'o');
+var repo = cmd.GetOption<string>("repo", 'r');
+var issue = cmd.GetOption<int?>("issue", 'i');
+var pr = cmd.GetOption<int?>("pr", 'p');
+var labels = cmd.GetArgument("labels");
+var dryrun = cmd.HasOption("dry-run", 'd');
 
 if (issue is not null)
 {
