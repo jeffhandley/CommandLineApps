@@ -18,6 +18,17 @@ static void ShowArgumentError(string arg)
     throw new ArgumentException($"Unknown argument {arg}");
 }
 
+static int? ParseInt(string arg, string argName)
+{
+    if (int.TryParse(arg, out int val))
+    {
+        return val;
+    }
+
+    ShowArgumentError(argName);
+    return null;
+}
+
 string org = string.Empty;
 string repo = string.Empty;
 int? issue = null;
@@ -25,7 +36,6 @@ int? pr = null;
 List<string> labels = new();
 bool dryRun = false;
 
-// Loop through arguments and parse them
 for (int i = 0; i < args.Length; i++)
 {
     if (args[i].StartsWith("-") && !args[i].StartsWith("--"))
@@ -41,10 +51,10 @@ for (int i = 0; i < args.Length; i++)
                     repo = args[++i];
                     break;
                 case 'i':
-                    issue = int.Parse(args[++i]);
+                    issue = ParseInt(c.ToString(), "i");
                     break;
                 case 'p':
-                    pr = int.Parse(args[++i]);
+                    pr = ParseInt(c.ToString(), "p");
                     break;
                 case 'd':
                     dryRun = true;
@@ -69,10 +79,10 @@ for (int i = 0; i < args.Length; i++)
                 repo = args[++i];
                 break;
             case "--issue":
-                issue = int.Parse(args[++i]);
+                issue = ParseInt(args[++i], "issue");
                 break;
             case "--pr":
-                pr = int.Parse(args[++i]);
+                pr = ParseInt(args[++i], "pr");
                 break;
             case "--dry-run":
                 dryRun = true;
