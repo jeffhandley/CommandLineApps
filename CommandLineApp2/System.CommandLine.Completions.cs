@@ -17,6 +17,17 @@ namespace System.CommandLine
         {
         }
 
-        public bool ShowIfNeeded(CliParseResult cli) => false;
+        public bool IsNeeded(CliParseResult result) => result.HasDirective(this.Name);
+
+        public bool ShowIfNeeded(CliParseResult result)
+        {
+            if (result.HasDirective(this.Name))
+            {
+                // Write out the completion responses
+                return true;
+            }
+
+            return false;
+        }
     }
 }

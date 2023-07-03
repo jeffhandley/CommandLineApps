@@ -64,6 +64,14 @@ namespace System.CommandLine
 
     public struct CliParseResult
     {
+        private bool _hasErrors = false;
+
+        public CliParseResult(IEnumerable<string> errors)
+        {
+            _hasErrors = errors.Any();
+        }
+
+        public bool HasErrors { get => _hasErrors; }        
         public T GetOption<T>(CliOption<T> option) => default(T)!;
         public T GetOption<T>(string name) => default(T)!;
         public T GetOption<T>(string name, char abbr) => default(T)!;
