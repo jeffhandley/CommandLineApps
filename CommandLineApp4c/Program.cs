@@ -28,7 +28,7 @@ var issueOrPr = cli.AddGroup(CliGroupType.MutuallyExclusive);
 var issue = issueOrPr.Add(new CliOption<int?>("issue", 'i') { Description = "The GitHub issue number" });
 var pr = issueOrPr.Add(new CliOption<int?>("pr", new[] { "p", "pull", "pull-request" }) { Description = "The GitHub Pull Request number" });
 var labels = cli.Add(new CliArgument<string>("labels", minArgs: 1) { Description = "The labels to add or remove" });
-var dryrun = cli.Add(new CliOption("dry-run", new[] { "d", "dryrun", "whatif", "what-if" }) { Description = "Perform a dry-run without adding or removing labels" });
+var dryrun = cli.Add(new CliOption<bool>("dry-run", new[] { "d", "dryrun", "whatif", "what-if" }) { Description = "Perform a dry-run without adding or removing labels" });
 
 if (cli.Invoke(args, new() {
     { add, cmd => AddLabels(cmd.GetOption(org), cmd.GetOption(repo), cmd.GetOption(issue), cmd.GetOption(pr), cmd.GetArgument(labels), cmd.GetOption(dryrun)) },

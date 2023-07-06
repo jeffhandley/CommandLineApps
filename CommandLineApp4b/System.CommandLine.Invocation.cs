@@ -1,26 +1,23 @@
 namespace System.CommandLine
 {
-    public static class CliInvocation
+    public static partial class CliInvocation
     {
-        public static bool Invoke(this Cli cli, string[] args, Dictionary<CliCommand, Func<CliParseResult, int>> actions) => Invoke(cli, args, actions, out _);
-
-        public static bool Invoke(this Cli cli, string[] args, Dictionary<CliCommand, Func<CliParseResult, int>> actions, out int exitCode)
+        public static bool Invoke(this Cli cli, string[] args, Dictionary<CliCommand, Func<CliParseResult, int>> actions)
         {
             cli.AddHelp();
             cli.AddCompletion();
 
-            var result = CliParser.Parse(args, cli);
+            var result = cli.Parse(args);
 
-            if (CliCompletion.ShowIfNeeded(result, out exitCode)) return true;
-            if (CliHelp.ShowIfNeeded(result, out exitCode)) return true;
+            if (CliCompletion.ShowIfNeeded(result)) return true;
+            if (CliHelp.ShowIfNeeded(result)) return true;
 
             if (result.InvokedCommand is not null && actions.TryGetValue(result.InvokedCommand, out var action))
             {
-                exitCode = action(result);
+                action(result);
                 return true;
             }
 
-            exitCode = 0;
             return false;
         }
     }

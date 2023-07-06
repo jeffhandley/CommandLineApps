@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
@@ -7,5 +7,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\CommandLineApp1\System.CommandLine.cs" Link="Previous\CommandLineApp1\System.CommandLine.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\CommandLineApp2\System.CommandLine.cs" Link="Previous\CommandLineApp2\System.CommandLine.cs" />
+    <Compile Include="..\CommandLineApp2\System.CommandLine.Help.cs" Link="Previous\CommandLineApp2\System.CommandLine.Help.cs" />
+  </ItemGroup>
 
 </Project>

@@ -28,20 +28,21 @@ var issueOrPr = cli.AddGroup(CliGroupType.MutuallyExclusive);
 var issue = issueOrPr.AddOption<int?>("issue", 'i');
 var pr = issueOrPr.AddOption<int?>("pr", 'p');
 var labels = cli.AddArgument<string>("labels", minArgs: 1);
-var dryrun = cli.AddOption("dry-run", 'd');
+var dryrun = cli.AddOption<bool>("dry-run", 'd');
 
 cli.AddHelp();
 cli.AddCompletion();
 
-var cmd = CliParser.Parse(args, cli);
+var cmd = cli.Parse(args);
+
 if (CliCompletion.ShowIfNeeded(cmd, out int e1)) return e1;
 if (CliHelp.ShowIfNeeded(cmd, out int e2)) return e2;
 
-if (cmd.IsInvoked(add))
+if (cmd.HasCommand(add))
 {
     return AddLabels(cmd.GetOption(org), cmd.GetOption(repo), cmd.GetOption(issue), cmd.GetOption(pr), cmd.GetArgument(labels), cmd.GetOption(dryrun));
 }
-else if (cmd.IsInvoked(remove))
+else if (cmd.HasCommand(remove))
 {
     return RemoveLabels(cmd.GetOption(org), cmd.GetOption(repo), cmd.GetOption(issue), cmd.GetOption(pr), cmd.GetArgument(labels), cmd.GetOption(dryrun));
 }

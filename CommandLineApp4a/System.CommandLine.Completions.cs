@@ -1,39 +1,29 @@
 namespace System.CommandLine
 {
-    public static class CliCompletion
+    public static partial class CliCompletion
     {
-        public static CliCompletionDirective AddCompletion(this Cli cli)
-        {
-            var completion = new CliCompletionDirective();
-            cli.AddDirective(completion);
-
-            return completion;
-        }
-
-        public static bool ShowIfNeeded(CliParseResult result) => ShowIfNeeded(result, out _);
-
         public static bool ShowIfNeeded(CliParseResult result, out int exitCode)
         {
             var completion = new CliCompletionDirective();
             return completion.ShowIfNeeded(result, out exitCode);
         }
+
+        public static CliCompletionDirective AddCompletion(this Cli cli)
+        {
+            var completion = new CliCompletionDirective();
+            cli.Add(completion);
+
+            return completion;
+        }
     }
 
-    public class CliCompletionDirective : CliDirective
+    public partial class CliCompletionDirective
     {
-        public CliCompletionDirective() : base("complete")
-        {
-        }
-
-        public bool IsNeeded(CliParseResult result) => result.HasDirective(this.Name);
-
-        public bool ShowIfNeeded(CliParseResult result) => ShowIfNeeded(result, out _);
-
         public bool ShowIfNeeded(CliParseResult result, out int exitCode)
         {
             exitCode = 0;
 
-            if (result.HasDirective(this.Name))
+            if (IsNeeded(result))
             {
                 // Write out the completion responses
                 return true;

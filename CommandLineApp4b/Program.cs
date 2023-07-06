@@ -28,7 +28,7 @@ var issueOrPr = cli.AddGroup(CliGroupType.MutuallyExclusive);
 var issue = issueOrPr.AddOption<int?>("issue", 'i');
 var pr = issueOrPr.AddOption<int?>("pr", 'p');
 var labels = cli.AddArgument<string>("labels", minArgs: 1);
-var dryrun = cli.AddOption("dry-run", 'd');
+var dryrun = cli.AddOption<bool>("dry-run", 'd');
 
 cli.Invoke(args, new() {
     { add, cmd => AddLabels(cmd.GetOption(org), cmd.GetOption(repo), cmd.GetOption(issue), cmd.GetOption(pr), cmd.GetArgument(labels), cmd.GetOption(dryrun)) },
