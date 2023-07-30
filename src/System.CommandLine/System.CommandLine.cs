@@ -3,14 +3,12 @@
     public static partial class CliParser
     {
         public static CliParseResult Parse(string[] args) => new CliParseResult { args = args };
-        public static CliParseResult Parse(string[] args, Cli cli) => new CliParseResult { args = args };
         public static CliParseResult Parse(this Cli cli, string[] args) => new CliParseResult { args = args };
     }
 
     public partial struct CliParseResult
     {
         internal string[] args { get; init; } = new string[0];
-        public IEnumerable<T> GetArguments<T>() => Enumerable.Empty<T>();
         public IEnumerable<T> GetArguments<T>(ushort minArgs, ushort maxArgs = 0) => Enumerable.Empty<T>();
         public T GetOption<T>(string name, char? abbr = null) => default!;
 
@@ -18,7 +16,6 @@
         public CliParseResult() { }
         public bool HasErrors { get; } = false;
 
-        public T GetOption<T>(string name, IEnumerable<string> aliases, IEnumerable<char> shortNames) => default!;
         public bool HasCommand(string name) => args?.Contains(name) ?? false;
         public bool HasDirective(CliDirective directive) => false;
         public T GetOption<T>(CliOption<T> option) => default(T)!;
@@ -34,7 +31,6 @@
     {
         public CliCommand AddCommand(string name) => new CliCommand(name);
         public CliOption<T> Add<T>(CliOption<T> option) => option;
-        public CliOption<T> AddOption<T>(string name) => Add(new CliOption<T>(name));
         public CliOption<T> AddOption<T>(string name, char abbr) => Add(new CliOption<T>(name, abbr));
         public CliGroup AddGroup(CliGroupType type) => new CliGroup(type);
         public CliArgument<T> Add<T>(CliArgument<T> argument) => argument;
