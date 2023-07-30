@@ -1,14 +1,16 @@
-# Proposal 1
+# Design Change Proposal
 
 ## Layering Changes
 
 ### Invocation / Actions
 
-All invocation models must be decoupled from the CLI model and parse result. Instead, the parse result must have the information needed to easily build an invocation model around the CLI model and parse result. As it is, every application model must find a way to adapt the desired development experience into `CliAction` APIs so that the built-in invocation model can function. This is a common challenge with "declarative" programming models, where extensibility can be challenging since all "imperative" coding approaches need to be adapted into the declarative model, which can be very limiting and awkward.
+All invocation models must be decoupled from the CLI model and parse result. Instead, the parse result must have the information needed to easily build an invocation model around the CLI model and parse result.
 
-All programming models needing to adapt into the declarative model also incurs risk of precluding performance optimizations and even introducing security vulnerabilities since narrow scope scenarios cannot be tightened up to block dangerous scenarios. A hypothetical example would be a scenario where passing a malicious argument value could lead to execution of dangerous code _within_ the core of the parser, with this code running in a cloud application in a manner where the argument values are untrusted. If such an incident were to occur, the application code would likely not be in a position to mitigate the risk, and any fixes in the parser core would be breaking changes.
+As it is, every application model must find a way to adapt the desired development experience into `CliAction` APIs so that the built-in invocation model can function. This is a common challenge with declarative programming models, where extensibility can be challenging since all imperative coding approaches need to be adapted into the declarative model, which can be very limiting and awkward.
 
-One of the goals with System.CommandLine must be for the parser itself to be exceptionally stable--"done" even. Invocation models must be empowered to evolve and even be supplanted though. We currently have several invocation models in place and in mind including: strongly-typed `main` programs that use source-generators, other source-generator approaches that extend top-level statements cleanly, and even interceptor-based ideas. We also have sync- and async-based invocation which has recently evolved, and there are unsolved problems involving exit codes. It's clear that invocation models must be free to evolve and multiply since each approach as trade-offs and each implementation captures a point-in-time representation of coding practices. As invocation models evolve though, we must not need to update or extend the core parser, and those invocation models must not be forced to map their programming models to the invocation model that was baked in.
+All programming models needing to adapt into the declarative model also incurs risk of precluding performance optimizations and even introducing security vulnerabilities since narrow scope scenarios cannot be tightened up to block dangerous scenarios. A hypothetical example is when passing a malicious argument value could lead to execution of dangerous code _within_ the core of the parser, with this code running in a cloud application in a manner where the argument values are untrusted. If such an incident were to occur, the application code would likely not be in a position to mitigate the risk, and any fixes in the parser core would be breaking changes.
+
+One of the goals with System.CommandLine must be for the parser itself to be exceptionally stable--finished even. Invocation models will evolve and even be supplanted though. We currently have several invocation models in place and in mind including: strongly-typed `main` programs that use source-generators, other source-generator approaches that extend top-level statements cleanly, and even interceptor-based ideas. We also have sync- and async-based invocation which has recently evolved, and there are unsolved problems involving exit codes. It's clear that invocation models must be free to evolve and multiply since each approach as trade-offs and each implementation captures a point-in-time representation of current coding practices. As invocation models evolve, we must not need to update or extend the core parser, and those invocation models must not be forced to map their programming models to the invocation model that was baked in.
 
 The core parser must be completely devoid of any invocation model. Instead, the parse result must make building an invocation model exceptionally easy. A `CliAction`-based invocation model will still be included and promoted, but our servicing story will significantly improve with that factoring.
 
@@ -19,8 +21,8 @@ There are a few validation functions baked in using a design that needs reconsid
 1. There are validation methods exposed directly on `CliArgument<T>`
     - Those validators aren't always applicable
     - A subclass would be more appropriate for the File/Directory validators
-2. There is a mixture of APIs directly on the argument, extension methods, and extensibility
-    - This yields multiple validation mechanisms, which is a concept count and maintenance concern
+2. There is a mixture of APIs directly on the argument, extension methods, and there are collextions for `Action`-based validators
+    - It is unclear hos these relate to each other, both in concept and in ordering
 
 We also need to ensure the `ArgumentResult`, `OptionResult`, and `CommandResult` inputs are sufficient and most appropriate. There's risk in coupling the parse result APIs into the CLI model APIs, as this is essentially a circular dependency. An ideal API shape would allow the CLI model APIs to be in a separate assembly from the parser itself, but striving for that ideal might introduce more API complexity than is justified.
 
@@ -36,10 +38,6 @@ Another way to approach custom parsers is to promote derived `CliOption` classes
 
 Another approach would be register custom parsers, where this could be keyed by either `CliSymbol` or `Type`.
 
-### Option Groups
-
-Mutually-exclusive options and grouped options are relatively common scenarios. These can come in the form of "all-or-none", "exactly one", or "zero or one" configurations. What would be the prescribed approach for implementing this behavior? Would there be a relationship with arguments? Could this be represented in the help usage output? Or would this just be implemented as command validation?
-
 ## API-Level Topics
 
 ### `CliSymbol`
@@ -52,11 +50,9 @@ Hidden from what? We should consider removing this from `CliSymbol` and instead 
 
 #### Argument Name
 
-It's initially confusing that arguments have names, since the name is not supplied on the command-line. The name is required for printing help and the diagram directive. The name is even used in the `ToString()` methods for convenience. It's possible this could be worked around though by generating default names such as `arg0` and `arg1` that would be printed in help and the diagram directive.
+It's initially confusing that arguments have names, since the name is not supplied on the command-line. As-is, the name is required for printing help and the diagram directive and is even used in the `ToString()` methods for convenience. It's possible this could be worked around though by generating default names such as `arg0` and `arg1` that would be printed in help and the diagram directive.
 
-Getting argument value(s) by name is the other scenario, and it's typical for the lookup name to match the name that should show up in help.
-
-While concentrating on a parse result shape that carries all necessary information for consumption in any invocation model, a different lookup approach may become apparent. Perhaps even one where every `CliSymbol` as a `string Key` that works like a unique key (with the parser throwing if the unique constraint is violated).
+Getting argument value(s) by name is the other scenario, and it's typical for the lookup name to match the name that should show up in help. While concentrating on a parse result shape that carries all necessary information for consumption in any invocation model, a different lookup approach may become apparent. Perhaps even one where every `CliSymbol` has a `string Key` that works like a unique key (throwing an exception if the unique constraint is violated).
 
 #### Default Values
 
@@ -102,9 +98,9 @@ It's not entirely clear if directives' names should include the surrounding squa
 
 #### Invocation
 
-Invocation of options is an interesting API challenge. While we need to exclude any specific invocation model from the option API, and it's atypical for an option to have its own invocation, there's value in all invocation models being able to share the same invocation precedence logic that is currently baked into the parser. To produce information on the parse result that makes it clear what symbol should be invoked, it's possible that an option needs to carry information that it can be invoked, thus taking precedence over the command it's a child of.
+Invocation of options is an interesting API challenge. We need to exclude any specific invocation model from the option API, and it's atypical for an option to have its own invocation. But there's value in all invocation models being able to share the same invocation precedence logic that is currently baked into the parser. To produce information on the parse result that makes it clear what symbol should be invoked, it's possible that an option needs to carry information that it can be invoked, thus taking precedence over the command it's a child of.
 
-Alternatively, instead of addressing this problem of invocation precedence within the symbol APIs though, documentation could cover the scenario of options that have their own invocation. That documentation could include guidelines for how precedence should be implemented. While we want to embrace the idea that invocation models will come and go and otherwise evolve, there will be a very small number of invocation models compared to the number of CLI applications.
+Alternatively, instead of addressing this problem of invocation precedence within the symbol APIs though, documentation could cover the scenario of options that have their own invocation. That documentation could include guidelines for how precedence should be implemented. While we want to embrace the idea that invocation models will come and go and otherwise evolve, there will be a very small number of invocation models compared to the number of CLI applications, and invocation model authors will be reading documentation, writing tests, and aiming to match existing end-user behavior.
 
 An invocation model that uses a "registration" programming model, where commands are registered or "mapped", that registration system could support various `CliSymbol` types being registered. For example, all directives, commands, and sub-commands would need to be registered, and options could also be registered. Precedence logic would likely be: Directives, Options (in order of registration), Commands (and their sub-commands).
 
@@ -116,17 +112,21 @@ We should also attempt to remove `GetDefaultValue` from the non-generic `CliOpti
 
 #### Recursive options
 
-Another name for "Recursive" would be "AppliesToSub-Commands".
+Another name for "Recursive" would be "AppliesToSubcommands".
 
 This approach of an option declaring that it applies to sub-commands has a potential flaw though: sub-commands are not in control of which parent options apply, and there is no obvious way for a sub-command to override which options from ancestors _do not_ apply. An alternate or complementary approach would be to allow sub-commands to control which ancestor options apply.
 
-Instead of options having APIs related to the command/sub-command concept, it could be worth considering moving this information to the CliCommand API to contain the concept there.
+Instead of options having APIs related to the command/sub-command concept, it could be worth considering moving this information to the `CliCommand` API to contain the concept there.
 
 #### Option Names
 
 Ideally, developers would not need to specify the "--" and "-" prefixes on the option names. In the most common scenarios, simply supplying a name could yield the full name being registered with the "--" prefix and the first character being registered as an alias with the "-" prefix. This would of course feed into POSIX bundling as well. That default behavior could be overridden through additional parameters/properties.
 
-By allowing option names to implicitly be prefixed with "--" and "-", this would address the uncertainty with directive names and the surrounding brackets. That omission would also improve name-based lookup of options as the "--" would not need to be included there either. Name collisions between options, arguments, and directives do become more likely with this approach, but that can be addressed with the unique `Key` mentioned above.
+By allowing option names to implicitly be prefixed with "--" and "-", this would address the uncertainty with directive names and the surrounding brackets. That omission would also improve name-based lookup of options as the "--" would not need to be included there either. Name collisions between options, arguments, and directives do become more likely with this approach, but that can be addressed with the unique `Key` mentioned above. That exception-throwing experience would bd extended to collisions in the inferred short names, requiring the conflict to be overridden.
+
+#### Boolean options
+
+Checking whether or not a Boolean option is specified is extremely common. But there is a pitfall where a `false` value could be supplied as the option-argument, which results in the option being specified but its value being false. Boolean options will need extra attention in the API review to avoid creating this pitfall.
 
 ### Option and Argument Arity
 
@@ -152,6 +152,10 @@ It's also noteworthy that options inherently use arguments as an implementation 
 
 Why do both of these exist and which is intended to be consumed?
 
-#### Argument and Option Values
+### Argument and Option Values
 
 The methods for getting values for arguments and options should not return `T?`, but instead return `T`. Those methods can throw if the argument or option isn't specified and there wasn't an unspecified value configured. This throwing, non-null return approach eliminates the need for handling possibly-null return values for arguments and options that were configured to be required and/or with unspecified values configured. Calling the method that returns an enumerable could succeed for single-value arguments/options, but calling the method that returns a single value would throw for enumerable arguments/options.
+
+### Option Groups
+
+Mutually-exclusive options and grouped options are relatively common scenarios. These can come in the form of "all-or-none", "exactly one", or "zero or one" configurations. What would be the prescribed approach for implementing this behavior? Would there be a relationship with arguments? Could this be represented in the help usage output? Or would this just be implemented as command validation? Should the existing `ArgumentArity` help cover this scenario?
