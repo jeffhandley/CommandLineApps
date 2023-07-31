@@ -81,32 +81,4 @@
             return new CliActionResult(result, invokedSymbol, exitCode ?? 1);
         }
     }
-
-    public static class CliSymbolExtensions
-    {
-        public static void SetAction(this CliCommand command, Func<CliParseResult, int> action)
-        {
-            CliSymbol? symbol = command.Parent;
-            for (; symbol is not null && symbol is not ActionCli; symbol = symbol.Parent) ;
-
-            if (symbol is ActionCli cli)
-            {
-                cli.SetAction(command, action);
-            }
-        }
-    }
-
-    public class CliActionResult
-    {
-        public CliActionResult(CliParseResult result, CliSymbol? invokedSymbol, int exitCode)
-        {
-            ParseResult = result;
-            InvokedSymbol = invokedSymbol;
-            ExitCode = exitCode;
-        }
-
-        public CliParseResult ParseResult { get; private init; }
-        public CliSymbol? InvokedSymbol { get; private init; }
-        public int ExitCode { get; private init; }
-    }
 }

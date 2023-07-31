@@ -18,12 +18,12 @@ var help = cmd.GetOption(new CliHelpOption()); help = true;
 
 if (!help)
 {
-    var org = cmd.GetOption<string>("org", 'o');                      org = "dotnet";
-    var repo = cmd.GetOption<string>("repo", 'r');                    repo = "runtime";
-    var issue = cmd.GetOption<int?>("issue", 'i');                    issue = 40074;
-    var pr = cmd.GetOption<int?>("pr", 'p');                          pr = null;
-    var labels = cmd.GetArguments<string>(minArgs: 1);                labels = new[] { "area-System.Security", "untriaged" };
-    var dryrun = cmd.GetOption<bool>("dry-run", 'd');                 dryrun = true;
+    var org = cmd.GetOption<string>("org");                             org = "dotnet";
+    var repo = cmd.GetOption<string>("repo");                           repo = "runtime";
+    var issue = cmd.GetOption<int?>("issue");                           issue = 40074;
+    var pr = cmd.GetOption<int?>("pr");                                 pr = null;
+    var labels = cmd.GetArguments<string>(minArgs: 1);                  labels = new[] { "area-System.Security", "untriaged" };
+    var dryrun = cmd.GetOption<bool>("dry-run");                        dryrun = true;
 
     if (issue is not null)
     {

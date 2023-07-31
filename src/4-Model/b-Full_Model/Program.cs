@@ -10,12 +10,12 @@ var cli = new Cli();
 var add = cli.AddCommand("add");
 var remove = cli.AddCommand("remove");
 
-var org = cli.AddOption<string>("org", 'o');
-var repo = cli.AddOption<string>("repo", 'r');
-var issue = cli.AddOption<int?>("issue", 'i');
-var pr = cli.AddOption<int?>("pr", 'p');
+var org = cli.AddOption<string>("org");
+var repo = cli.AddOption<string>("repo");
+var issue = cli.AddOption<int?>("issue");
+var pr = cli.AddOption<int?>("pr");
 var labels = cli.AddArguments<string>(minArgs: 1);
-var dryrun = cli.AddOption<bool>("dry-run", 'd');
+var dryrun = cli.AddOption<bool>("dry-run");
 
 cli.AddHelp();
 cli.AddCompletion();
