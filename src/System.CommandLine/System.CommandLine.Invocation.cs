@@ -4,8 +4,8 @@ namespace System.CommandLine
     {
         public static bool Invoke(this Cli cli, string[] args, Dictionary<CliCommand, Func<CliParseResult, int>> actions)
         {
-            cli.AddHelp();
             cli.AddCompletion();
+            cli.AddHelp();
 
             var result = cli.Parse(args);
 
@@ -24,12 +24,12 @@ namespace System.CommandLine
             return false;
         }
 
-        public static bool Invoke(this Cli cli, string[] args, Dictionary<CliCommand, Func<CliParseResult, int>> actions, out int exitCode)
+        public static bool Invoke(this Cli cli, IEnumerable<string> args, Dictionary<CliCommand, Func<CliParseResult, int>> actions, out int exitCode)
         {
             cli.AddHelp();
             cli.AddCompletion();
 
-            var result = cli.Parse(args);
+            var result = CliParser.Parse(cli, args);
 
             if (CliCompletion.ShowIfNeeded(result, out exitCode)) return true;
             if (CliHelp.ShowIfNeeded(result, out exitCode)) return true;

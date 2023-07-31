@@ -17,7 +17,7 @@ namespace System.CommandLine
         public static CliCompletionDirective AddCompletion(this Cli cli)
         {
             var completion = new CliCompletionDirective();
-            cli.Add(completion);
+            cli.AddDirective(completion);
 
             return completion;
         }

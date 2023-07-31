@@ -23,7 +23,7 @@ namespace System.CommandLine
         public static CliHelpOption AddHelp(this Cli cli)
         {
             var help = new CliHelpOption();
-            cli.Add(help);
+            cli.AddOption(help);
 
             return help;
         }
@@ -36,7 +36,7 @@ namespace System.CommandLine
             ShortNames = new[] { 'h', '?' };
         }
 
-        public bool IsNeeded(CliParseResult result) => result.HasErrors || result.HasFlag(this.Name);
+        public bool IsNeeded(CliParseResult result) => result.HasErrors || result.GetOption<bool>(this.Name);
 
         public bool ShowIfNeeded(CliParseResult result)
         {
@@ -47,7 +47,7 @@ namespace System.CommandLine
                     // Show errors and help
                     return true;
                 }
-                else if (result.HasFlag(this.Name))
+                else if (result.GetOption<bool>(this.Name))
                 {
                     // Show help
                     return true;
@@ -67,7 +67,7 @@ namespace System.CommandLine
                 exitCode = 1;
                 return true;
             }
-            else if (result.HasFlag(this.Name))
+            else if (result.GetOption<bool>(this.Name))
             {
                 // Show help
                 return true;

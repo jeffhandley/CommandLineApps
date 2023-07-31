@@ -21,6 +21,8 @@ var pr = new CliOption<int?>("--pr", new[] { "-p" }) { Recursive = true };
 var dryrun = new CliOption<bool>("--dry-run", new[] { "-d" }) { Recursive = true };
 
 var cli = new CliRootCommand { add, remove, org, repo, issue, pr, dryrun };
+cli.Description = "Apply labels to a GitHub issue or PR";
+
 cli.Validators.Add(result =>
 {
     if (result.GetValue(issue) is null && result.GetValue(pr) is null)

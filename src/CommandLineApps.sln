@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "5a-Inline_Command_Map", "5-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "5b-Help_and_ExitCode", "5-Invocation\b-Help_and_ExitCode\5b-Help_and_ExitCode.csproj", "{A3F3F872-2B21-47AC-A8B8-EC581FC05CF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5c-ActionCli", "5-Invocation\5c-ActionCli\5c-ActionCli.csproj", "{00847D00-81FB-43BE-B97D-5D4DB86B8BD0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{A3F3F872-2B21-47AC-A8B8-EC581FC05CF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3F3F872-2B21-47AC-A8B8-EC581FC05CF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3F3F872-2B21-47AC-A8B8-EC581FC05CF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00847D00-81FB-43BE-B97D-5D4DB86B8BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00847D00-81FB-43BE-B97D-5D4DB86B8BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00847D00-81FB-43BE-B97D-5D4DB86B8BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00847D00-81FB-43BE-B97D-5D4DB86B8BD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +133,7 @@ Global
 		{4C8AFD2F-208C-42DE-97F2-D58D75036996} = {C7B32927-A57C-460E-89F8-D1FE511B839A}
 		{13CD080B-872F-4111-A7C7-EBE2A76C9DB3} = {04310A4F-E4B3-47F4-B12A-C1C8942DC9F7}
 		{A3F3F872-2B21-47AC-A8B8-EC581FC05CF6} = {04310A4F-E4B3-47F4-B12A-C1C8942DC9F7}
+		{00847D00-81FB-43BE-B97D-5D4DB86B8BD0} = {04310A4F-E4B3-47F4-B12A-C1C8942DC9F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5402870F-4E61-425B-84DF-7762F45E654F}

@@ -12,9 +12,8 @@ var remove = cli.AddCommand("remove");
 
 var org = cli.AddOption<string>("org", 'o');
 var repo = cli.AddOption<string>("repo", 'r');
-var issueOrPr = cli.AddGroup(CliGroupType.MutuallyExclusive);
-var issue = issueOrPr.AddOption<int?>("issue", 'i');
-var pr = issueOrPr.AddOption<int?>("pr", 'p');
+var issue = cli.AddOption<int?>("issue", 'i');
+var pr = cli.AddOption<int?>("pr", 'p');
 var labels = cli.AddArguments<string>(minArgs: 1);
 var dryrun = cli.AddOption<bool>("dry-run", 'd');
 
@@ -28,12 +27,12 @@ if (CliHelp.ShowIfNeeded(cmd, out int e2)) return e2;
 
 if (cmd.HasCommand(add))
 {
-    return GitHubHelper.Labels.Add(
-        cmd.GetOption(org)                  ?? "dotnet",
-        cmd.GetOption(repo)                 ?? "runtime",
-        cmd.GetOption(issue)                ?? 40074,
-        cmd.GetOption(pr),
-        cmd.GetArguments(labels)            .Append("area-System.Security"),
+    return GitHubHelper.Labels.Add(                                         "dotnet" ??
+        cmd.GetOption(org),                                                 "runtime" ??
+        cmd.GetOption(repo),                                                (int?)40074 ??
+        cmd.GetOption(issue),
+        cmd.GetOption(pr),                                                  new[] { "area-System.Security" } ??
+        cmd.GetArguments(labels),                                           true ||
         cmd.GetOption(dryrun)
     );
 }

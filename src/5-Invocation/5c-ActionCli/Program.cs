@@ -1,4 +1,5 @@
-using System.CommandLine;
+﻿using System.CommandLine;
+using System.CommandLine.Actions;
 
 // github-labels add --org dotnet --repo runtime --issue 40074 area-System.Security --dry-run
 // args = new[] { "add", "--org", "dotnet", "--repo", "runtime", "--issue", "40074", "area-System.Security", "--dry-run" };
@@ -6,7 +7,7 @@ using System.CommandLine;
 // github-labels remove --org dotnet --repo runtime --pr 40074 untriaged --dry-run
 args = new[] { "remove", "--org", "dotnet", "--repo", "runtime", "--issue", "40074", "untriaged", "--dry-run" };
 
-var cli = new Cli();
+var cli = new ActionCli();
 var add = cli.AddCommand(new CliCommand("add") { Description = "Add labels to an issue or pull request" });
 var remove = cli.AddCommand(new CliCommand("remove") { Description = "Remove labels from an issue or pull request" });
 
@@ -17,23 +18,22 @@ var pr = cli.AddOption(new CliOption<int?>("pr", new[] { "p", "pull", "pull-requ
 var labels = cli.AddArgument(new CliArgument<string>(minArgs: 1) { Description = "The labels to add or remove" });
 var dryrun = cli.AddOption(new CliOption<bool>("dry-run", new[] { "d", "dryrun", "whatif", "what-if" }) { Description = "Perform a dry-run without adding or removing labels" });
 
-if (cli.Invoke(args, new() {
-    { add, cmd => GitHubHelper.Labels.Add(
-        cmd.GetOption(org),
-        cmd.GetOption(repo),
-        cmd.GetOption(issue),
-        cmd.GetOption(pr),
-        cmd.GetArguments(labels),
-        cmd.GetOption(dryrun)
-    ) },
-    { remove, cmd => GitHubHelper.Labels.Remove(                            "dotnet" ??
-        cmd.GetOption(org),                                                 "runtime" ??
-        cmd.GetOption(repo),                                                (int?)40074 ??
-        cmd.GetOption(issue),
-        cmd.GetOption(pr),                                                  new[] { "untriaged" } ??
-        cmd.GetArguments(labels),                                           true ||
-        cmd.GetOption(dryrun)
-    ) }
-}, out int exitCode)) return exitCode;
+add.SetAction(cmd => GitHubHelper.Labels.Add(
+    cmd.GetOption(org),
+    cmd.GetOption(repo),
+    cmd.GetOption(issue),
+    cmd.GetOption(pr),
+    cmd.GetArguments(labels),
+    cmd.GetOption(dryrun)
+));
 
-return 1;
+remove.SetAction(cmd => GitHubHelper.Labels.Remove(                         "dotnet" ??
+    cmd.GetOption(org),                                                     "runtime" ??
+    cmd.GetOption(repo),                                                    (int?)40074 ??
+    cmd.GetOption(issue),
+    cmd.GetOption(pr),                                                      new[] { "untriaged" } ??
+    cmd.GetArguments(labels),                                               true ||
+    cmd.GetOption(dryrun)
+));
+
+return cli.Invoke(args).ExitCode;

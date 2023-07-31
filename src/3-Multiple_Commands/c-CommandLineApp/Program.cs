@@ -30,7 +30,7 @@ if (!help)
     var issue = cmd.GetOption<int?>("issue", 'i');                    issue = 40074;
     var pr = cmd.GetOption<int?>("pr", 'p');                          pr = null;
     var labels = cmd.GetArguments<string>(minArgs: 1);                labels = new[] { "area-System.Security", "untriaged" };
-    var dryrun = cmd.HasFlag("dry-run", 'd');                         dryrun = true;
+    var dryrun = cmd.GetOption<bool>("dry-run", 'd');                 dryrun = true;
 
     if (add)
     {
