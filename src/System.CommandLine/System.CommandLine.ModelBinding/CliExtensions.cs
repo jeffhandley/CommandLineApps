@@ -12,9 +12,9 @@
             return command;
         }
 
-        public static bool TryGetCommand<T>(this CliParseResult result, ModelBoundCommand<T> command, out T commandArgs)
+        public static bool TryGetCommand<T>(this CliParseResult result, ModelBoundCommand<T> command, out T commandArgs) where T : new()
         {
-            commandArgs = default!;
+            commandArgs = new T();
             return result.HasCommand(command);
         }
     }

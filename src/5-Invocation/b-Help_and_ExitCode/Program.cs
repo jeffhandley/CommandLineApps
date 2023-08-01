@@ -26,12 +26,12 @@ if (cli.Invoke(args, new() {
         cmd.GetArguments(labels),
         cmd.GetOption(dryrun)
     ) },
-    { remove, cmd => GitHubHelper.Labels.Remove(                            "dotnet" ??
-        cmd.GetOption(org),                                                 "runtime" ??
-        cmd.GetOption(repo),                                                (int?)40074 ??
+    { remove, cmd => GitHubHelper.Labels.Remove(
+        cmd.GetOption(org),
+        cmd.GetOption(repo),
         cmd.GetOption(issue),
-        cmd.GetOption(pr),                                                  new[] { "untriaged" } ??
-        cmd.GetArguments(labels),                                           true ||
+        cmd.GetOption(pr),
+        cmd.GetArguments(labels),
         cmd.GetOption(dryrun)
     ) }
 }, out int exitCode)) return exitCode;

@@ -19,11 +19,11 @@ var dryrun = cli.AddOption<bool>("dry-run", 'd');
 
 cli.Invoke(args, new() {
     { add, cmd => GitHubHelper.Labels.Add(
-        cmd.GetOption(org)                  ?? "dotnet",
-        cmd.GetOption(repo)                 ?? "runtime",
-        cmd.GetOption(issue)                ?? 40074,
+        cmd.GetOption(org),
+        cmd.GetOption(repo),
+        cmd.GetOption(issue),
         cmd.GetOption(pr),
-        cmd.GetArguments(labels)            .Append("area-System.Security"),
+        cmd.GetArguments(labels),
         cmd.GetOption(dryrun)
     ) },
     { remove, cmd => GitHubHelper.Labels.Remove(

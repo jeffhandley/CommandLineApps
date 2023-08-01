@@ -25,12 +25,12 @@ if (!help)
     var add = cmd.HasCommand("add");
     var remove = cmd.HasCommand("remove");
 
-    var org = cmd.GetOption<string>("org");                             org = "dotnet";
-    var repo = cmd.GetOption<string>("repo");                           repo = "runtime";
-    var issue = cmd.GetOption<int?>("issue");                           issue = 40074;
-    var pr = cmd.GetOption<int?>("pr");                                 pr = null;
-    var labels = cmd.GetArguments<string>(minArgs: 1);                  labels = new[] { "area-System.Security", "untriaged" };
-    var dryrun = cmd.GetOption<bool>("dry-run");                        dryrun = true;
+    var org = cmd.GetOption<string>("org");
+    var repo = cmd.GetOption<string>("repo");
+    var issue = cmd.GetOption<int?>("issue");
+    var pr = cmd.GetOption<int?>("pr");
+    var labels = cmd.GetArguments<string>(minArgs: 1);
+    var dryrun = cmd.GetOption<bool>("dry-run");
 
     if (add)
     {

@@ -27,12 +27,12 @@ if (CliHelp.ShowIfNeeded(cmd, out exitCode)) return exitCode;
 
 if (cmd.HasCommand(add))
 {
-    return GitHubHelper.Labels.Add(                                         "dotnet" ??
-        cmd.GetOption(org),                                                 "runtime" ??
-        cmd.GetOption(repo),                                                (int?)40074 ??
+    return GitHubHelper.Labels.Add(
+        cmd.GetOption(org),
+        cmd.GetOption(repo),
         cmd.GetOption(issue),
-        cmd.GetOption(pr),                                                  new[] { "area-System.Security" } ??
-        cmd.GetArguments(labels),                                           true ||
+        cmd.GetOption(pr),
+        cmd.GetArguments(labels),
         cmd.GetOption(dryrun)
     );
 }

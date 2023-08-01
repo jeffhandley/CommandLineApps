@@ -21,12 +21,12 @@ if (CliHelp.ShowIfNeeded(cmd, out exitCode)) return exitCode;
 
 if (cmd.TryGetCommand(add, out var options))
 {
-    return GitHubHelper.Labels.Add(                                             "dotnet" ??
-        options.Org,                                                            "runtime" ??
-        options.Repo,                                                           (int?)40074 ??
+    return GitHubHelper.Labels.Add(
+        options.Org,
+        options.Repo,
         options.Issue,
-        options.PR,                                                             new[] { "area-System.Security" } ??
-        options.Labels,                                                         true ||
+        options.PR,
+        options.Labels,
         options.DryRun
     );
 }
@@ -44,4 +44,8 @@ else if (cmd.TryGetCommand(remove, out options))
 
 return 1;
 
-record struct CommandOptions(string Org, string Repo, int? Issue, int? PR, [Argument(minArgs: 1)] IEnumerable<string> Labels, bool DryRun);
+record struct CommandOptions(string Org, string Repo, int? Issue, int? PR, [Argument(minArgs: 1)] IEnumerable<string> Labels, bool DryRun)
+{
+    // Apply defaults for illustration
+    public CommandOptions() : this("dotnet", "runtime", 40074, null, new[] { "area-System.Security" }, true) { }
+}

@@ -6,10 +6,10 @@
 
         public CliParseResult() { }
 
-        public T GetOption<T>(string name, char? abbr = null) => default!;
-        public T GetOption<T>(CliOption<T> option) => default(T)!;
-        public IEnumerable<T> GetArguments<T>(ushort minArgs, ushort maxArgs = 0) => Enumerable.Empty<T>();
-        public IEnumerable<T> GetArguments<T>(CliArgument<T> argument) => Enumerable.Empty<T>();
+        public T GetOption<T>(string name, char? abbr = null) => GetOptionValue<T>(name)!;
+        public T GetOption<T>(CliOption<T> option) => GetOption<T>(option.Name);
+        public IEnumerable<T> GetArguments<T>(ushort minArgs, ushort maxArgs = 0) => GetArgumentValues<T>();
+        public IEnumerable<T> GetArguments<T>(CliArgument<T> argument) => GetArguments<T>(argument.MinArgs, argument.MaxArgs);
         public bool HasDirective(string name) => args.Contains($"[{name}]");
         public bool HasDirective(CliDirective directive) => HasDirective(directive.Name);
         public bool HasCommand(string name) => args.Contains(name);
@@ -17,5 +17,32 @@
         public bool HasOption(string name) => args.Contains($"--{name}");
         public bool HasOption(CliOption option) => HasOption(option.Name);
         public bool HasErrors { get; } = false;
+
+        private T GetOptionValue<T>(string name)
+        {
+            return name switch
+            {
+                "org" => (T)(object)"dotnet",
+                "repo" => (T)(object)"runtime",
+                "issue" => (T)(object)(int?)40074,
+                "pr" => (T)(object)(int?)null!,
+                "dry-run" => (T)(object)true,
+                _ => default(T)!,
+            };
+        }
+
+        private IEnumerable<T> GetArgumentValues<T>()
+        {
+            if (this.HasCommand("add"))
+            {
+                return new[] { (T)(object)"area-System.Security" };
+            }
+            else if (this.HasCommand("remove"))
+            {
+                return new[] { (T)(object)"untriaged" };
+            }
+
+            return new[] { (T)(object)"area-System.Security", (T)(object)"untriaged" };
+        }
     }
 }
