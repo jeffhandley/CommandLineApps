@@ -22,8 +22,8 @@ cli.AddCompletion();
 
 var cmd = cli.Parse(args);
 
-if (CliCompletion.ShowIfNeeded(cmd, out int e1)) return e1;
-if (CliHelp.ShowIfNeeded(cmd, out int e2)) return e2;
+if (CliCompletion.ShowIfNeeded(cmd, out int exitCode)) return exitCode;
+if (CliHelp.ShowIfNeeded(cmd, out exitCode)) return exitCode;
 
 if (cmd.HasCommand(add))
 {

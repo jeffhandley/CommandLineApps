@@ -20,11 +20,13 @@ static void ShowHelp()
 var cli = new Cli();
 var add = cli.AddCommand("add");
 var remove = cli.AddCommand("remove");
+
 var help = cli.AddHelp();
 var completion = cli.AddCompletion();
 
 var cmd = cli.Parse(args);
-if (completion.IsNeeded(cmd)) return;
+
+if (completion.ShowIfNeeded(cmd)) return;
 
 if (!help.IsNeeded(cmd))
 {
