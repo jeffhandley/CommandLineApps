@@ -47,13 +47,13 @@ namespace Source_Generated_Main
             CliArgument<string> labels = add.AddArguments<string>(minArgs: 1);
             CliOption<bool> dryRun = add.AddOption<bool>("dry-run");
 
-            action = (CliParseResult result) => GitHubHelper.Labels.Add(
+            action = (CliParseResult result) => Add(
                 result.GetOption(org),
                 result.GetOption(repo),
                 result.GetOption(issue),
                 result.GetOption(pr),
-                result.GetArguments(labels),
-                result.GetOption(dryRun));
+                result.GetOption(dryRun),
+                result.GetArguments(labels).ToArray());
 
             return add;
         }
@@ -68,13 +68,13 @@ namespace Source_Generated_Main
             CliArgument<string> labels = add.AddArguments<string>(minArgs: 1);
             CliOption<bool> dryRun = add.AddOption<bool>("dry-run");
 
-            action = (CliParseResult result) => GitHubHelper.Labels.Remove(
+            action = (CliParseResult result) => Remove(
                 result.GetOption(org),
                 result.GetOption(repo),
                 result.GetOption(issue),
                 result.GetOption(pr),
-                result.GetArguments(labels),
-                result.GetOption(dryRun));
+                result.GetOption(dryRun),
+                result.GetArguments(labels).ToArray());
 
             return add;
         }
