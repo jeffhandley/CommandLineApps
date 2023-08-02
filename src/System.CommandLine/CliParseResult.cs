@@ -5,7 +5,6 @@
         internal IEnumerable<string> args { get; init; } = Enumerable.Empty<string>();
 
         public CliParseResult() { }
-
         public T GetOption<T>(string name, char? abbr = null) => GetOptionValue<T>(name)!;
         public T GetOption<T>(CliOption<T> option) => GetOption<T>(option.Name);
         public IEnumerable<T> GetArguments<T>(ushort minArgs, ushort maxArgs = 0) => GetArgumentValues<T>();
@@ -17,6 +16,13 @@
         public bool HasOption(string name) => args.Contains($"--{name}");
         public bool HasOption(CliOption option) => HasOption(option.Name);
         public bool HasErrors { get; } = false;
+
+        // CS7002 Unexpected use of a generic name
+
+        //public T this<T>[string name]
+        //{
+        //    get => GetOption<T>(name);
+        //}
 
         private T GetOptionValue<T>(string name)
         {
