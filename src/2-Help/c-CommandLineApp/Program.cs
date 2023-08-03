@@ -1,6 +1,7 @@
 using System.CommandLine;
 
 // apply-labels --org dotnet --repo runtime --issue 40074 area-System.Security untriaged --dry-run
+if (args.Length == 0) args = new[] { "--help" };
 
 static void ShowHelp()
 {
@@ -14,7 +15,7 @@ static void ShowHelp()
 }
 
 var cmd = CliParser.Parse(args);
-var help = cmd.GetOption(new CliHelpOption()); help = true;
+var help = cmd.GetOption(new CliHelpOption());
 
 if (!help)
 {

@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
 
 // apply-labels --org dotnet --repo runtime --issue 40074 area-System.Security untriaged --dry-run
-args = new[] { "--org", "dotnet", "--repo", "runtime", "--issue", "40074", "area-System.Security", "untriaged", "--dry-run" };
+if (args.Length == 0) args = new[] { "--org", "dotnet", "--repo", "runtime", "--issue", "40074", "area-System.Security", "untriaged", "--dry-run" };
 
 var org = new CliOption<string>("--org", new[] { "-o" }) { Required = true };
 var repo = new CliOption<string>("--repo", new[] { "-r" }) { Required = true };

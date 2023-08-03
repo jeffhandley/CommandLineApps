@@ -22,11 +22,12 @@
         {
             return name switch
             {
-                "org" => (T)(object)"dotnet",
-                "repo" => (T)(object)"runtime",
-                "issue" => (T)(object)(int?)40074,
-                "pr" => (T)(object)(int?)null!,
-                "dry-run" => (T)(object)true,
+                "org" => (T)(object)(string)(args.Contains("--org") || args.Contains("-o") ? "dotnet" : (string)null!),
+                "repo" => (T)(object)(string)(args.Contains("--org") || args.Contains("-o") ? "runtime" : (string)null!),
+                "issue" => (T)(object)(args.Contains("--issue") || args.Contains("-i") ? (int?)40074 : (int?)null)!,
+                "pr" => (T)(object)(args.Contains("--pr") || args.Contains("-p") ? (int?)40074 : (int?)null)!,
+                "dry-run" => (T)(object)(bool)(args.Contains("--dry-run") || args.Contains("-d")),
+                "help" => (T)(object)(bool)(args.Contains("--help") || args.Contains("-h") || args.Contains("-?")),
                 _ => default(T)!,
             };
         }

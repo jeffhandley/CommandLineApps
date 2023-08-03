@@ -7,8 +7,11 @@ namespace Source_Generated_Main
     {
         static int Main(string[] args)
         {
-            args = new[] { "add", "--org", "dotnet", "--repo", "runtime", "--issue", "40074", "area-System.Security", "--dry-run" };
-            // args = new[] { "remove", "--org", "dotnet", "--repo", "runtime", "--issue", "40074", "untriaged", "--dry-run" };
+            // github-labels add --org dotnet --repo runtime --issue 40074 area-System.Security --dry-run
+            // github-labels remove --org dotnet --repo runtime --pr 40074 untriaged --dry-run
+
+            // if (args.Length == 0) args = new[] { "add", "--org", "dotnet", "--repo", "runtime", "--issue", "40074", "area-System.Security", "--dry-run" };
+            if (args.Length == 0) args = new[] { "remove", "--org", "dotnet", "--repo", "runtime", "--pr", "40074", "untriaged", "--dry-run" };
 
             Cli cli = new();
             CliCommand add = cli.AddCommand(BuildCliCommand_Add(out Action<CliParseResult> addAction));
@@ -60,7 +63,7 @@ namespace Source_Generated_Main
 
         static CliCommand BuildCliCommand_Remove(out Action<CliParseResult> action)
         {
-            CliCommand add = new CliCommand("Remove") { Description = "Remove labels from an issue or pull request" };
+            CliCommand add = new CliCommand("remove") { Description = "Remove labels from an issue or pull request" };
             CliOption<string> org = add.AddOption<string>("org");
             CliOption<string> repo = add.AddOption<string>("repo");
             CliOption<int?> issue = add.AddOption<int?>("issue");

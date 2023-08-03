@@ -1,10 +1,10 @@
 using System.CommandLine;
 
 // github-labels add --org dotnet --repo runtime --issue 40074 area-System.Security --dry-run
-args = new[] { "add", "--org", "dotnet", "--repo", "runtime", "--issue", "40074", "area-System.Security", "--dry-run" };
-
 // github-labels remove --org dotnet --repo runtime --pr 40074 untriaged --dry-run
-// args = new[] { "remove", "--org", "dotnet", "--repo", "runtime", "--issue", "40074", "untriaged", "--dry-run" };
+
+if (args.Length == 0) args = new[] { "add", "--org", "dotnet", "--repo", "runtime", "--issue", "40074", "area-System.Security", "--dry-run" };
+// if (args.Length == 0) args = new[] { "remove", "--org", "dotnet", "--repo", "runtime", "--pr", "40074", "untriaged", "--dry-run" };
 
 static void ShowHelp()
 {
