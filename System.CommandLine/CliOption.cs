@@ -2,11 +2,11 @@
 {
     public abstract class CliOption : CliSymbol
     {
-        public CliOption(string name, IEnumerable<string> aliases, IEnumerable<char> shortNames)
+        public CliOption(string name, IEnumerable<char> shortNames, IEnumerable<string> aliases)
         {
             Name = name;
-            Aliases = aliases;
             ShortNames = shortNames;
+            Aliases = aliases;
         }
 
         public string Name { get; set; }
@@ -17,10 +17,10 @@
 
     public partial class CliOption<T> : CliOption
     {
-        public CliOption(string name) : base(name, Enumerable.Empty<string>(), Enumerable.Empty<char>()) { }
-        public CliOption(string name, char shortName) : base(name, Enumerable.Empty<string>(), new[] { shortName }) { }
-        public CliOption(string name, IEnumerable<string> aliases) : base(name, aliases, Enumerable.Empty<char>()) { }
-        public CliOption(string name, IEnumerable<string> aliases, char shortName) : base(name, aliases, new[] { shortName }) { }
-        public CliOption(string name, IEnumerable<string> aliases, IEnumerable<char> shortNames) : base(name, aliases, shortNames) { }
+        public CliOption(string name) : base(name, Enumerable.Empty<char>(), Enumerable.Empty<string>()) { }
+        public CliOption(string name, char shortName) : base(name, new[] { shortName }, Enumerable.Empty<string>()) { }
+        public CliOption(string name, IEnumerable<string> aliases) : base(name, Enumerable.Empty<char>(), aliases) { }
+        public CliOption(string name, char shortName, IEnumerable<string> aliases) : base(name, new[] { shortName }, aliases) { }
+        public CliOption(string name, IEnumerable<char> shortNames, IEnumerable<string> aliases) : base(name, shortNames, aliases) { }
     }
 }

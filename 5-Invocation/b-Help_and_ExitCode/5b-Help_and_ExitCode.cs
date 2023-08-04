@@ -9,12 +9,12 @@ var cli = new Cli();
 var add = cli.AddCommand(new CliCommand("add") { Description = "Add labels to an issue or pull request" });
 var remove = cli.AddCommand(new CliCommand("remove") { Description = "Remove labels from an issue or pull request" });
 
-var org = cli.AddOption(new CliOption<string>("org", new[] { "o", "owner" }) { Description = "The GitHub organization/owner" });
+var org = cli.AddOption(new CliOption<string>("org", 'o', new[] { "owner" }) { Description = "The GitHub organization/owner" });
 var repo = cli.AddOption(new CliOption<string>("repo", 'r') { Description = "The GitHub Repository" });
 var issue = cli.AddOption(new CliOption<int?>("issue", 'i') { Description = "The GitHub issue number" });
-var pr = cli.AddOption(new CliOption<int?>("pr", new[] { "p", "pull", "pull-request" }) { Description = "The GitHub Pull Request number" });
+var pr = cli.AddOption(new CliOption<int?>("pr", 'p', new[] { "pull", "pull-request" }) { Description = "The GitHub Pull Request number" });
 var labels = cli.AddArgument(new CliArgument<string>(minArgs: 1) { Description = "The labels to add or remove" });
-var dryrun = cli.AddOption(new CliOption<bool>("dry-run", new[] { "d", "dryrun", "whatif", "what-if" }) { Description = "Perform a dry-run without adding or removing labels" });
+var dryrun = cli.AddOption(new CliOption<bool>("dry-run", 'd', new[] { "dryrun", "whatif", "what-if" }) { Description = "Perform a dry-run without adding or removing labels" });
 
 if (cli.Invoke(args, new() {
     { add, cmd => GitHubHelper.Labels.Add(

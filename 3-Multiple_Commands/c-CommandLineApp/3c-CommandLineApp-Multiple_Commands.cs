@@ -23,12 +23,12 @@ if (!help)
     var add = cmd.HasCommand("add");
     var remove = cmd.HasCommand("remove");
 
-    string org = cmd["org"];
-    string repo = cmd["repo"];
-    int? issue = cmd["issue"];
-    int? pr = cmd["pr"];
-    string[] labels = cmd.Arguments;
-    bool dryrun = cmd["dry-run"];
+    var org = cmd.GetOption<string>("org");
+    var repo = cmd.GetOption<string>("repo");
+    var issue = cmd.GetOption<int?>("issue");
+    var pr = cmd.GetOption<int?>("pr");
+    var labels = cmd.GetArguments<string>(minArgs: 1);
+    var dryrun = cmd.GetOption<bool>("dry-run");
 
     if (add)
     {

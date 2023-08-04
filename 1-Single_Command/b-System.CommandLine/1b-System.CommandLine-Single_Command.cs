@@ -1,12 +1,12 @@
 ﻿// apply-labels --org dotnet --repo runtime --issue 40074 area-System.Security untriaged --dry-run
 if (args.Length == 0) args = new[] { "--org", "dotnet", "--repo", "runtime", "--issue", "40074", "area-System.Security", "untriaged", "--dry-run" };
 
-var org = new CliOption<string>("--org", new[] { "-o" }) { Required = true };
-var repo = new CliOption<string>("--repo", new[] { "-r" }) { Required = true };
-var issue = new CliOption<int?>("--issue", new[] { "-i" });
-var pr = new CliOption<int?>("--pr", new[] { "-p" });
+var org = new CliOption<string>("--org", "-o") { Required = true };
+var repo = new CliOption<string>("--repo", "-r") { Required = true };
+var issue = new CliOption<int?>("--issue", "-i");
+var pr = new CliOption<int?>("--pr", "-p");
 var labels = new CliArgument<IEnumerable<string>>("labels") { Arity = ArgumentArity.OneOrMore };
-var dryrun = new CliOption<bool>("--dry-run", new[] { "-d" });
+var dryrun = new CliOption<bool>("--dry-run", "-d");
 
 var cli = new CliRootCommand { org, repo, issue, pr, labels, dryrun };
 cli.Validators.Add(result =>
