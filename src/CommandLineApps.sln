@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Single_Command", "1-Singl
 		1-Single_Command\a-ConsoleApp\1a-ConsoleApp-Single_Command.cs = 1-Single_Command\a-ConsoleApp\1a-ConsoleApp-Single_Command.cs
 		1-Single_Command\b-System.CommandLine\1b-System.CommandLine-Single_Command.cs = 1-Single_Command\b-System.CommandLine\1b-System.CommandLine-Single_Command.cs
 		1-Single_Command\c-CommandLineApp\1c-CommandLineApp-Single_Command.cs = 1-Single_Command\c-CommandLineApp\1c-CommandLineApp-Single_Command.cs
+		1-Single_Command\d-CommandLineApp-SCL\1d-CommandLineApp-Single_Command-SCL.cs = 1-Single_Command\d-CommandLineApp-SCL\1d-CommandLineApp-Single_Command-SCL.cs
+		CommandLineApp-Notes.md = CommandLineApp-Notes.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Help", "2-Help", "{57591493-5B65-4EE7-AF59-6630B6535F37}"
