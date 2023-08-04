@@ -1,12 +1,12 @@
 
-## Behavioral notes for the APIs illustrated below:
+## Behavioral notes for the APIs that don't model the CLI upfront
 
 ### Names and single-character aliases
 - The '--' prefix is inferred for option names
 - The first character of the option name is inferred as the single-character alias
 - The '-' prefix is inferred for single-character aliases; bundling works by default
-- Those default behaviors can be overridden with overloads
 - If there are collisions on option names or abbreviations, an exception is thrown
+- We can determine if overriding the prefixes should be available (if so, why?)
 
 ### Required and nullable values
 - If a non-nullable option is not specified, an exception is thrown
@@ -23,4 +23,4 @@
 
 ## What about more advanced features like sub-commands?
 - Optimize for a progressive disclosure approach
-- You'd be guided toward modeling your CLI as shown in subsequent stages
+- Guide users toward modeling the CLI in order to use intermediate and advanced features
