@@ -45,5 +45,37 @@
 
             return new[] { (T)(object)"area-System.Security", (T)(object)"untriaged" };
         }
+
+        public OptionValueGetter this[string name] => new OptionValueGetter(this, name);
+        public ArgumentValueGetter Arguments => new ArgumentValueGetter(this);
+
+        public struct OptionValueGetter
+        {
+            private CliParseResult _result;
+            private string _name;
+
+            internal OptionValueGetter(CliParseResult result, string name)
+            {
+                _result = result;
+                _name = name;
+            }
+
+            public static implicit operator bool(OptionValueGetter getter) => getter._result.GetOption<bool>(getter._name);
+            public static implicit operator string(OptionValueGetter getter) => getter._result.GetOption<string>(getter._name);
+            public static implicit operator int(OptionValueGetter getter) => getter._result.GetOption<int>(getter._name);
+            public static implicit operator int?(OptionValueGetter getter) => getter._result.GetOption<int?>(getter._name);
+        }
+
+        public struct ArgumentValueGetter
+        {
+            private CliParseResult _result;
+
+            internal ArgumentValueGetter(CliParseResult result)
+            {
+                _result = result;
+            }
+
+            public static implicit operator string[](ArgumentValueGetter getter) => getter._result.GetArguments<string>(minArgs: 1).ToArray();
+        }
     }
 }
