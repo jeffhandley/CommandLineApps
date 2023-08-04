@@ -38,37 +38,7 @@ bool dryrun = false;
 
 for (int i = 0; i < args.Length; i++)
 {
-    if (args[i].StartsWith("-") && !args[i].StartsWith("--"))
-    {
-        foreach (var c in args[i].Substring(1))
-        {
-            switch (c)
-            {
-                case 'o':
-                    org = args[++i];
-                    break;
-                case 'r':
-                    repo = args[++i];
-                    break;
-                case 'i':
-                    issue = ParseInt(args[++i], "i");
-                    break;
-                case 'p':
-                    pr = ParseInt(args[++i], "p");
-                    break;
-                case 'd':
-                    dryrun = true;
-                    break;
-                case 'h':
-                    ShowHelp();
-                    return;
-                default:
-                    ShowArgumentError(c.ToString());
-                    return;
-            }
-        }
-    }
-    else if (args[i].StartsWith("--"))
+    if (args[i].StartsWith("--"))
     {
         switch (args[i])
         {
@@ -93,6 +63,37 @@ for (int i = 0; i < args.Length; i++)
             default:
                 ShowArgumentError(args[i]);
                 return;
+        }
+    }
+    else if (args[i].StartsWith("-"))
+    {
+        foreach (var c in args[i].Substring(1))
+        {
+            switch (c)
+            {
+                case 'o':
+                    org = args[++i];
+                    break;
+                case 'r':
+                    repo = args[++i];
+                    break;
+                case 'i':
+                    issue = ParseInt(args[++i], "i");
+                    break;
+                case 'p':
+                    pr = ParseInt(args[++i], "p");
+                    break;
+                case 'd':
+                    dryrun = true;
+                    break;
+                case 'h':
+                case '?':
+                    ShowHelp();
+                    return;
+                default:
+                    ShowArgumentError(c.ToString());
+                    return;
+            }
         }
     }
     else

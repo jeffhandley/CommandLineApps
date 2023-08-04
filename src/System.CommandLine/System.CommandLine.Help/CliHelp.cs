@@ -8,12 +8,6 @@
             return help.ShowIfNeeded(result);
         }
 
-        public static int ShowError(CliParseException parseException)
-        {
-            // Show errors and help
-            return 1;
-        }
-
         public static bool ShowIfNeeded(CliParseResult result, out int exitCode)
         {
             var help = new CliHelpOption();

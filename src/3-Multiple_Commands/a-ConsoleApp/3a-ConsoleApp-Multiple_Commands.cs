@@ -30,6 +30,12 @@ static int? ParseInt(string arg, string argName)
     throw new ArgumentException($"Argument '{arg}' must be an integer");
 }
 
+if (args.Length == 0 || !(new[] { "add", "remove" }.Contains(args[0])))
+{
+    ShowHelp();
+    return;
+}
+
 string command = args[0];
 string org = string.Empty;
 string repo = string.Empty;
@@ -42,37 +48,7 @@ bool dryrun = false;
 
 for (int i = 1; i < args.Length; i++)
 {
-    if (args[i].StartsWith("-") && !args[i].StartsWith("--"))
-    {
-        foreach (var c in args[i].Substring(1))
-        {
-            switch (c)
-            {
-                case 'o':
-                    org = args[++i];
-                    break;
-                case 'r':
-                    repo = args[++i];
-                    break;
-                case 'i':
-                    issue = ParseInt(args[++i], "i");
-                    break;
-                case 'p':
-                    pr = ParseInt(args[++i], "p");
-                    break;
-                case 'd':
-                    dryrun = true;
-                    break;
-                case 'h':
-                    ShowHelp();
-                    return;
-                default:
-                    ShowArgumentError(c.ToString());
-                    return;
-            }
-        }
-    }
-    else if (args[i].StartsWith("--"))
+    if (args[i].StartsWith("--"))
     {
         switch (args[i])
         {
@@ -97,6 +73,37 @@ for (int i = 1; i < args.Length; i++)
             default:
                 ShowArgumentError(args[i]);
                 return;
+        }
+    }
+    else if (args[i].StartsWith("-"))
+    {
+        foreach (var c in args[i].Substring(1))
+        {
+            switch (c)
+            {
+                case 'o':
+                    org = args[++i];
+                    break;
+                case 'r':
+                    repo = args[++i];
+                    break;
+                case 'i':
+                    issue = ParseInt(args[++i], "i");
+                    break;
+                case 'p':
+                    pr = ParseInt(args[++i], "p");
+                    break;
+                case 'd':
+                    dryrun = true;
+                    break;
+                case 'h':
+                case '?':
+                    ShowHelp();
+                    return;
+                default:
+                    ShowArgumentError(c.ToString());
+                    return;
+            }
         }
     }
     else

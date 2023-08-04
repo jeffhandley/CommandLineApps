@@ -10,7 +10,28 @@ bool dryrun = false;
 
 for (int i = 0; i < args.Length; i++)
 {
-    if (args[i].StartsWith("-") && !args[i].StartsWith("--"))
+    if (args[i].StartsWith("--"))
+    {
+        switch (args[i])
+        {
+            case "--org":
+                org = args[++i];
+                break;
+            case "--repo":
+                repo = args[++i];
+                break;
+            case "--issue":
+                issue = int.Parse(args[++i]);
+                break;
+            case "--pr":
+                pr = int.Parse(args[++i]);
+                break;
+            case "--dry-run":
+                dryrun = true;
+                break;
+        }
+    }
+    else if (args[i].StartsWith("-"))
     {
         foreach (var c in args[i].Substring(1))
         {
@@ -32,27 +53,6 @@ for (int i = 0; i < args.Length; i++)
                     dryrun = true;
                     break;
             }
-        }
-    }
-    else if (args[i].StartsWith("--"))
-    {
-        switch (args[i])
-        {
-            case "--org":
-                org = args[++i];
-                break;
-            case "--repo":
-                repo = args[++i];
-                break;
-            case "--issue":
-                issue = int.Parse(args[++i]);
-                break;
-            case "--pr":
-                pr = int.Parse(args[++i]);
-                break;
-            case "--dry-run":
-                dryrun = true;
-                break;
         }
     }
     else

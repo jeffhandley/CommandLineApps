@@ -9,6 +9,11 @@ namespace System.CommandLine
 
         public bool IsNeeded(CliParseResult result) => result.HasErrors || result.GetOption<bool>(this.Name);
 
+        public void Show(CliParseResult result)
+        {
+            Console.WriteLine("GENERATED HELP WOULD BE SHOWN");
+        }
+
         public bool ShowIfNeeded(CliParseResult result)
         {
             if (IsNeeded(result))
@@ -16,11 +21,12 @@ namespace System.CommandLine
                 if (result.HasErrors)
                 {
                     // Show errors and help
+                    Show(result);
                     return true;
                 }
                 else if (result.GetOption<bool>(this.Name))
                 {
-                    // Show help
+                    Show(result);
                     return true;
                 }
             }
@@ -41,6 +47,7 @@ namespace System.CommandLine
             else if (result.GetOption<bool>(this.Name))
             {
                 // Show help
+                Show(result);
                 return true;
             }
 
