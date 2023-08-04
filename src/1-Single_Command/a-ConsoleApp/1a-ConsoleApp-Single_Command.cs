@@ -1,5 +1,4 @@
-﻿
-// apply-labels --org dotnet --repo runtime --issue 40074 area-System.Security untriaged --dry-run
+﻿// apply-labels --org dotnet --repo runtime --issue 40074 area-System.Security untriaged --dry-run
 if (args.Length == 0) args = new[] { "--org", "dotnet", "--repo", "runtime", "--issue", "40074", "area-System.Security", "untriaged", "--dry-run" };
 
 string org = string.Empty;
