@@ -1,4 +1,6 @@
-﻿namespace System.CommandLine.ModelBinding
+﻿using System.CommandLineApp;
+
+namespace System.CommandLine.ModelBinding
 {
     public class ModelBoundResult<TCommands>
     {

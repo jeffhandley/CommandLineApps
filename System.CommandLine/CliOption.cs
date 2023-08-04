@@ -1,4 +1,4 @@
-﻿namespace System.CommandLine
+﻿namespace System.CommandLineApp
 {
     public abstract class CliOption : CliSymbol
     {

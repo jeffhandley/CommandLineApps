@@ -1,4 +1,4 @@
-﻿namespace System.CommandLine
+﻿namespace System.CommandLineApp
 {
     public partial class CliDirective : CliSymbol
     {

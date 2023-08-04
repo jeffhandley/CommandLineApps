@@ -1,49 +1,107 @@
-﻿namespace System.CommandLine
+﻿using System.CommandLine;
+using System.Linq;
+
+namespace System.CommandLineApp
 {
     public struct CliParseResult
     {
-        internal IEnumerable<string> args { get; init; } = Enumerable.Empty<string>();
+        private IReadOnlyList<string> _args;
+        private CliRootCommand RootCommand;
+        private Dictionary<string, System.CommandLine.CliCommand> Commands = new();
+        private Dictionary<string, System.CommandLine.CliOption> Options = new();
+        private ushort ArgumentCount = 0;
 
-        public CliParseResult() { }
-
-        public T GetOption<T>(string name, char? abbr = null) => GetOptionValue<T>(name)!;
-        public T GetOption<T>(CliOption<T> option) => GetOption<T>(option.Name);
-        public IEnumerable<T> GetArguments<T>(ushort minArgs, ushort maxArgs = 0) => GetArgumentValues<T>();
-        public IEnumerable<T> GetArguments<T>(CliArgument<T> argument) => GetArguments<T>(argument.MinArgs, argument.MaxArgs);
-        public bool HasDirective(string name) => args.Contains($"[{name}]");
-        public bool HasDirective(CliDirective directive) => HasDirective(directive.Name);
-        public bool HasCommand(string name) => args.Contains(name);
-        public bool HasCommand(CliCommand command) => HasCommand(command.Name);
-        public bool HasOption(string name) => args.Contains($"--{name}");
-        public bool HasOption(CliOption option) => HasOption(option.Name);
-        public bool HasErrors { get; } = false;
-
-        private T GetOptionValue<T>(string name)
+        public CliParseResult() => throw new ArgumentNullException("args");
+        public CliParseResult(IEnumerable<string> args)
         {
-            return name switch
-            {
-                "org" => (T)(object)(string)(args.Contains("--org") || args.Contains("-o") ? "dotnet" : (string)null!),
-                "repo" => (T)(object)(string)(args.Contains("--org") || args.Contains("-o") ? "runtime" : (string)null!),
-                "issue" => (T)(object)(args.Contains("--issue") || args.Contains("-i") ? (int?)40074 : (int?)null)!,
-                "pr" => (T)(object)(args.Contains("--pr") || args.Contains("-p") ? (int?)40074 : (int?)null)!,
-                "dry-run" => (T)(object)(bool)(args.Contains("--dry-run") || args.Contains("-d")),
-                "help" => (T)(object)(bool)(args.Contains("--help") || args.Contains("-h") || args.Contains("-?")),
-                _ => default(T)!,
-            };
+            _args = args.ToList();
+
+            RootCommand = new CliRootCommand { TreatUnmatchedTokensAsErrors = false };
+            RootCommand.Options.Clear();
         }
 
-        private IEnumerable<T> GetArgumentValues<T>()
+        public CliParseResult(Cli cli, IEnumerable<string> args) : this(args)
         {
-            if (this.HasCommand("add"))
+            foreach (var command in cli.Commands)
             {
-                return new[] { (T)(object)"area-System.Security" };
+                AddCommand(command.Name);
             }
-            else if (this.HasCommand("remove"))
+        }
+
+        public T GetOption<T>(string name, char? abbr = null) => GetOptionValue<T>(name, Enumerable.Empty<string>(), new[] { name[0] })!;
+        public T GetOption<T>(CliOption<T> option) => GetOptionValue<T>(option.Name, option.Aliases, option.ShortNames);
+
+        public IEnumerable<T> GetArguments<T>(ushort minArgs, ushort maxArgs = 0) => GetArgumentValues<T>(minArgs, maxArgs);
+        public IEnumerable<T> GetArguments<T>(CliArgument<T> argument) => GetArguments<T>(argument.MinArgs, argument.MaxArgs);
+
+        public bool HasDirective(string name) => _args.Contains($"[{name}]");
+        public bool HasDirective(CliDirective directive) => HasDirective(directive.Name);
+
+        public bool HasCommand(CliCommand command) => HasCommand(command.Name);
+        public bool HasErrors { get; } = false;
+
+        public bool HasCommand(string name)
+        {
+            if (Commands.TryGetValue(name, out var command))
             {
-                return new[] { (T)(object)"untriaged" };
+                var result = RootCommand.Parse(_args);
+                return result.CommandResult.Command.Name == command.Name;
             }
 
-            return new[] { (T)(object)"area-System.Security", (T)(object)"untriaged" };
+            AddCommand(name);
+
+            return HasCommand(name);
+        }
+
+        private void AddCommand(string name)
+        {
+            var cliCommand = new System.CommandLine.CliCommand(name) { TreatUnmatchedTokensAsErrors = false };
+            RootCommand.Add(cliCommand);
+            Commands.Add(name, cliCommand);
+        }
+
+        private T GetOptionValue<T>(string name, IEnumerable<string> aliases, IEnumerable<char> shortNames)
+        {
+            if (Options.TryGetValue(name, out var option))
+            {
+                var result = RootCommand.Parse(_args);
+                return result.GetValue<T>((System.CommandLine.CliOption<T>)option!) ?? default(T)!;
+            }
+
+            AddOption<T>(name, aliases, shortNames);
+
+            return GetOptionValue<T>(name, aliases, shortNames);
+        }
+
+        private void AddOption<T>(string name, IEnumerable<string> aliases, IEnumerable<char> shortNames)
+        {
+            List<string> allAliases = new[] { $"-{name[0]}" }.Union(aliases.Select(a => $"--{a}")).Union(shortNames.Select(a => $"-{a}")).ToList();
+
+            var cliOption = new System.CommandLine.CliOption<T>($"--{name}", allAliases.ToArray()) { Recursive = true };
+            RootCommand.Add(cliOption);
+            Options.Add(name, cliOption);
+        }
+
+        private IEnumerable<T> GetArgumentValues<T>(ushort minArgs, ushort maxArgs)
+        {
+            var result = RootCommand.Parse(_args);
+            var argsExcludingSubsequentOptions = result.Tokens.Select(t => t.Value).ToList().Except(result.UnmatchedTokens).Union(result.UnmatchedTokens.TakeWhile(a => !a.StartsWith("-")));
+
+            var argument = new System.CommandLine.CliArgument<IEnumerable<T>>($"arg{ArgumentCount++}")
+            {
+                Arity = ArgumentArity.ZeroOrMore
+            };
+
+            RootCommand.Add(argument);
+
+            foreach (var command in Commands.Values)
+            {
+                command.Add(argument);
+            }
+
+            result = RootCommand.Parse(argsExcludingSubsequentOptions.ToList());
+
+            return result.GetValue(argument) ?? Enumerable.Empty<T>();
         }
 
         public OptionValueGetter this[string name] => new OptionValueGetter(this, name);
@@ -69,11 +127,7 @@
         public struct ArgumentValueGetter
         {
             private CliParseResult _result;
-
-            internal ArgumentValueGetter(CliParseResult result)
-            {
-                _result = result;
-            }
+            internal ArgumentValueGetter(CliParseResult result) => _result = result;
 
             public static implicit operator string[](ArgumentValueGetter getter) => getter._result.GetArguments<string>(minArgs: 1).ToArray();
         }

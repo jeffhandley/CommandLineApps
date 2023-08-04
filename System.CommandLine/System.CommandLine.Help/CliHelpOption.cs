@@ -1,4 +1,4 @@
-namespace System.CommandLine
+namespace System.CommandLineApp
 {
     public partial class CliHelpOption : CliOption<bool>
     {
@@ -44,7 +44,7 @@ namespace System.CommandLine
                 exitCode = 1;
                 return true;
             }
-            else if (result.GetOption<bool>(this.Name))
+            else if (result.GetOption<bool>(this))
             {
                 // Show help
                 Show(result);

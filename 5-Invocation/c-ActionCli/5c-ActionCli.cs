@@ -1,5 +1,4 @@
-﻿using System.CommandLine;
-using System.CommandLine.Actions;
+﻿using System.CommandLine.Actions;
 
 // github-labels add --org dotnet --repo runtime --issue 40074 area-System.Security --dry-run
 // github-labels remove --org dotnet --repo runtime --pr 40074 untriaged --dry-run

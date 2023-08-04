@@ -1,13 +1,20 @@
-﻿namespace System.CommandLine
+﻿namespace System.CommandLineApp
 {
     public partial class CliCommand : CliSymbol
     {
         public CliCommand(string name) => Name = name;
         public string Name { get; set; }
         public string? Description { get; set; }
+
+        public List<CliCommand> Commands { get; } = new();
+        public List<CliOption> Options { get; } = new();
+        public List<CliArgument> Arguments { get; } = new();
+
         public CliCommand AddCommand(CliCommand command)
         {
             command.Parent = this;
+            Commands.Add(command);
+
             return command;
         }
 
@@ -16,6 +23,8 @@
         public CliArgument<T> AddArgument<T>(CliArgument<T> argument)
         {
             argument.Parent = this;
+            Arguments.Add(argument);
+
             return argument;
         }
 
@@ -24,6 +33,8 @@
         public CliOption<T> AddOption<T>(CliOption<T> option)
         {
             option.Parent = this;
+            Options.Add(option);
+
             return option;
         }
 

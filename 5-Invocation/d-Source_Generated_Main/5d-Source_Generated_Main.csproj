@@ -9,8 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Using Include="System.CommandLineApp" />
+    
     <ProjectReference Include="..\..\GitHubHelper\GitHubHelper.csproj" />
-    <ProjectReference Include="..\..\System.CommandLine\System.CommandLine.csproj" />
+    <ProjectReference Include="..\..\System.CommandLine\System.CommandLineApp.csproj" />
   </ItemGroup>
 
 </Project>

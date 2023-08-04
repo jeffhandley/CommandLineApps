@@ -1,8 +1,10 @@
-namespace System.CommandLine
+using System.CommandLineApp;
+
+namespace System.CommandLine.Invocation
 {
     public static partial class CliInvocation
     {
-        public static bool Invoke(this Cli cli, string[] args, Dictionary<CliCommand, Func<CliParseResult, int>> actions)
+        public static bool Invoke(this Cli cli, string[] args, Dictionary<System.CommandLineApp.CliCommand, Func<CliParseResult, int>> actions)
         {
             cli.AddCompletion();
             cli.AddHelp();
@@ -24,7 +26,7 @@ namespace System.CommandLine
             return false;
         }
 
-        public static bool Invoke(this Cli cli, IEnumerable<string> args, Dictionary<CliCommand, Func<CliParseResult, int>> actions, out int exitCode)
+        public static bool Invoke(this Cli cli, IEnumerable<string> args, Dictionary<System.CommandLineApp.CliCommand, Func<CliParseResult, int>> actions, out int exitCode)
         {
             cli.AddHelp();
             cli.AddCompletion();

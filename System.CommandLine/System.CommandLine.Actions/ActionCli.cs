@@ -1,10 +1,12 @@
-﻿namespace System.CommandLine.Actions
+﻿using System.CommandLineApp;
+
+namespace System.CommandLine.Actions
 {
     public class ActionCli : Cli
     {
-        Dictionary<CliDirective, Func<CliParseResult, int>> _directiveActions = new();
-        Dictionary<CliCommand, Func<CliParseResult, int>> _commandActions = new();
-        Dictionary<CliOption, Func<CliParseResult, int>> _optionActions = new();
+        Dictionary<System.CommandLineApp.CliDirective, Func<CliParseResult, int>> _directiveActions = new();
+        Dictionary<System.CommandLineApp.CliCommand, Func<CliParseResult, int>> _commandActions = new();
+        Dictionary<System.CommandLineApp.CliOption, Func<CliParseResult, int>> _optionActions = new();
 
         CliCompletionDirective _completion;
         CliHelpOption _help;
@@ -27,13 +29,13 @@
             });
         }
 
-        public void SetAction(CliDirective directive, Func<CliParseResult, int> action) =>
+        public void SetAction(System.CommandLineApp.CliDirective directive, Func<CliParseResult, int> action) =>
             _directiveActions.Add(directive, action);
 
-        public void SetAction(CliCommand command, Func<CliParseResult, int> action) =>
+        public void SetAction(System.CommandLineApp.CliCommand command, Func<CliParseResult, int> action) =>
             _commandActions.Add(command, action);
 
-        public void SetAction<T>(CliOption<T> option, Func<CliParseResult, int> action) =>
+        public void SetAction<T>(System.CommandLineApp.CliOption<T> option, Func<CliParseResult, int> action) =>
             _optionActions.Add(option, action);
 
         public CliActionResult Invoke(IEnumerable<string> args)
@@ -42,7 +44,7 @@
             this.AddOption(_help);
 
             var result = CliParser.Parse(this, args);
-            CliSymbol? invokedSymbol = null;
+            System.CommandLineApp.CliSymbol? invokedSymbol = null;
             int? exitCode = null;
 
             foreach (var directive in _directiveActions.Keys)
@@ -58,7 +60,7 @@
             {
                 foreach (var option in _optionActions.Keys)
                 {
-                    if (result.HasOption(option))
+                    if (result.GetOption<bool>((System.CommandLineApp.CliOption<bool>)option))
                     {
                         exitCode = _optionActions[option](result);
                         invokedSymbol = option;

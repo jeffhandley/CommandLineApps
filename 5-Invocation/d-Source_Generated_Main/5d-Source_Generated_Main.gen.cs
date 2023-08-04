@@ -1,7 +1,4 @@
-﻿using System;
-using System.CommandLine;
-
-namespace Source_Generated_Main
+﻿namespace Source_Generated_Main
 {
     partial class Program
     {
