@@ -107,6 +107,9 @@ namespace System.CommandLineApp
         public OptionValueGetter this[string name] => new OptionValueGetter(this, name);
         public ArgumentValueGetter Arguments => new ArgumentValueGetter(this);
 
+        public OptionValueGetter GetOption(string name) => new OptionValueGetter(this, name);
+        public ArgumentValueGetter GetArguments() => new ArgumentValueGetter(this);
+
         public struct OptionValueGetter
         {
             private CliParseResult _result;

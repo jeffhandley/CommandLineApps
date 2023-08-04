@@ -12,7 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Single_Command", "1-Singl
 		1-Single_Command\a-ConsoleApp\1a-ConsoleApp-Single_Command.cs = 1-Single_Command\a-ConsoleApp\1a-ConsoleApp-Single_Command.cs
 		1-Single_Command\b-System.CommandLine\1b-System.CommandLine-Single_Command.cs = 1-Single_Command\b-System.CommandLine\1b-System.CommandLine-Single_Command.cs
 		1-Single_Command\c-CommandLineApp\1c-CommandLineApp-Single_Command.cs = 1-Single_Command\c-CommandLineApp\1c-CommandLineApp-Single_Command.cs
-		1-Single_Command\d-CommandLineApp-Indexer\1d-CommandLineApp-Indexer.cs = 1-Single_Command\d-CommandLineApp-Indexer\1d-CommandLineApp-Indexer.cs
 		CommandLineApp-Notes.md = CommandLineApp-Notes.md
 	EndProjectSection
 EndProject
@@ -83,7 +82,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "5d-Source_Generated_Main", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo-Projects", "Demo-Projects", "{0CC525F8-9339-4A4A-97F0-613FD54068A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1d-CommandLineApp-Indexer", "1-Single_Command\d-CommandLineApp-Indexer\1d-CommandLineApp-Indexer.csproj", "{6DFFB2EA-0035-408F-95BD-9DF8B251D3E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1d-CommandLineApp-Single_Command-TypeInferred", "1-Single_Command\d-CommandLineApp-TypeInferred\1d-CommandLineApp-Single_Command-TypeInferred.csproj", "{E4CC06D2-369A-4078-B609-064CBF6257A8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1e-CommandLineApp-TypeInferred-Indexer", "1-Single_Command\e-CommandLineApp-TypeInferred-Indexer\1e-CommandLineApp-TypeInferred-Indexer.csproj", "{353CB84F-6BA0-446A-9746-68F5351BB586}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -167,10 +168,14 @@ Global
 		{D7A4D632-11B7-49C3-B4EB-B2A512F0AB04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7A4D632-11B7-49C3-B4EB-B2A512F0AB04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7A4D632-11B7-49C3-B4EB-B2A512F0AB04}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DFFB2EA-0035-408F-95BD-9DF8B251D3E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DFFB2EA-0035-408F-95BD-9DF8B251D3E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DFFB2EA-0035-408F-95BD-9DF8B251D3E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DFFB2EA-0035-408F-95BD-9DF8B251D3E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4CC06D2-369A-4078-B609-064CBF6257A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4CC06D2-369A-4078-B609-064CBF6257A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4CC06D2-369A-4078-B609-064CBF6257A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4CC06D2-369A-4078-B609-064CBF6257A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{353CB84F-6BA0-446A-9746-68F5351BB586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{353CB84F-6BA0-446A-9746-68F5351BB586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{353CB84F-6BA0-446A-9746-68F5351BB586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{353CB84F-6BA0-446A-9746-68F5351BB586}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,7 +198,8 @@ Global
 		{A3F3F872-2B21-47AC-A8B8-EC581FC05CF6} = {0CC525F8-9339-4A4A-97F0-613FD54068A4}
 		{00847D00-81FB-43BE-B97D-5D4DB86B8BD0} = {0CC525F8-9339-4A4A-97F0-613FD54068A4}
 		{D7A4D632-11B7-49C3-B4EB-B2A512F0AB04} = {0CC525F8-9339-4A4A-97F0-613FD54068A4}
-		{6DFFB2EA-0035-408F-95BD-9DF8B251D3E2} = {0CC525F8-9339-4A4A-97F0-613FD54068A4}
+		{E4CC06D2-369A-4078-B609-064CBF6257A8} = {0CC525F8-9339-4A4A-97F0-613FD54068A4}
+		{353CB84F-6BA0-446A-9746-68F5351BB586} = {0CC525F8-9339-4A4A-97F0-613FD54068A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5402870F-4E61-425B-84DF-7762F45E654F}
