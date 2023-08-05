@@ -86,6 +86,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1d-CommandLineApp-Single_Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1e-CommandLineApp-Single_Command-TypeInferred-Indexer", "1-Single_Command\e-CommandLineApp-TypeInferred-Indexer\1e-CommandLineApp-Single_Command-TypeInferred-Indexer.csproj", "{353CB84F-6BA0-446A-9746-68F5351BB586}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1e-System.CommandLine-Single_Command-TypeInferred", "1-Single_Command\e-System.CommandLine-TypeInferred\1e-System.CommandLine-Single_Command-TypeInferred.csproj", "{E8BF281B-8E07-4F6D-A316-D8234259C356}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -176,6 +178,10 @@ Global
 		{353CB84F-6BA0-446A-9746-68F5351BB586}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{353CB84F-6BA0-446A-9746-68F5351BB586}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{353CB84F-6BA0-446A-9746-68F5351BB586}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8BF281B-8E07-4F6D-A316-D8234259C356}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8BF281B-8E07-4F6D-A316-D8234259C356}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8BF281B-8E07-4F6D-A316-D8234259C356}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8BF281B-8E07-4F6D-A316-D8234259C356}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -200,6 +206,7 @@ Global
 		{D7A4D632-11B7-49C3-B4EB-B2A512F0AB04} = {0CC525F8-9339-4A4A-97F0-613FD54068A4}
 		{E4CC06D2-369A-4078-B609-064CBF6257A8} = {0CC525F8-9339-4A4A-97F0-613FD54068A4}
 		{353CB84F-6BA0-446A-9746-68F5351BB586} = {0CC525F8-9339-4A4A-97F0-613FD54068A4}
+		{E8BF281B-8E07-4F6D-A316-D8234259C356} = {0CC525F8-9339-4A4A-97F0-613FD54068A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5402870F-4E61-425B-84DF-7762F45E654F}
