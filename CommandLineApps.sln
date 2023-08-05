@@ -86,7 +86,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1d-CommandLineApp-Single_Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1e-CommandLineApp-Single_Command-TypeInferred-Indexer", "1-Single_Command\e-CommandLineApp-TypeInferred-Indexer\1e-CommandLineApp-Single_Command-TypeInferred-Indexer.csproj", "{353CB84F-6BA0-446A-9746-68F5351BB586}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1e-System.CommandLine-Single_Command-TypeInferred", "1-Single_Command\e-System.CommandLine-TypeInferred\1e-System.CommandLine-Single_Command-TypeInferred.csproj", "{E8BF281B-8E07-4F6D-A316-D8234259C356}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1f-System.CommandLine-Single_Command-TypeInferred", "1-Single_Command\f-System.CommandLine-TypeInferred\1f-System.CommandLine-Single_Command-TypeInferred.csproj", "{E8BF281B-8E07-4F6D-A316-D8234259C356}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
