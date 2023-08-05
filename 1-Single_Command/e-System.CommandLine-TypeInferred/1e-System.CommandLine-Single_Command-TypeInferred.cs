@@ -17,15 +17,15 @@ cli.Validators.Add(result =>
     }
 });
 
-cli.SetAction(cmd =>
+cli.SetAction((ParseResult cmd) =>
 {
-    if ((int?)issue is not null)
+    if ((int?)cmd[issue] is not null)
     {
-        GitHubHelper.Labels.AddToIssue(org, repo, issue, labels, dryrun);
+        GitHubHelper.Labels.AddToIssue(cmd[org], cmd[repo], cmd[issue], (string[])cmd[labels], cmd[dryrun]);
     }
-    else if ((int?)pr is not null)
+    else if ((int?)cmd[pr] is not null)
     {
-        GitHubHelper.Labels.AddToPullRequest(org, repo, issue, labels, dryrun);
+        GitHubHelper.Labels.AddToPullRequest(cmd[org], cmd[repo], cmd[issue], (string[])cmd[labels], cmd[dryrun]);
     }
 });
 

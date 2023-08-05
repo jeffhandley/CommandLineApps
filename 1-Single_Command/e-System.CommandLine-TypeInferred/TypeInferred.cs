@@ -1,55 +1,57 @@
-﻿internal static class ParseResultContainer
+﻿public class CliRootCommand : System.CommandLine.CliRootCommand
 {
-    internal static System.CommandLine.ParseResult? ParseResult;
-}
-
-public class CliOption<T> : System.CommandLine.CliOption<T>
-{
-    public CliOption(string name, params string[] aliases) : base(name, aliases) { }
-
-    public static implicit operator T(CliOption<T> option)
+    public void SetAction(Action<ParseResult> action)
     {
-        if (ParseResultContainer.ParseResult is null)
-        {
-            throw new InvalidOperationException("Cannot retrieve the option value until parsing is completed.");
-        }
-
-        return ParseResultContainer.ParseResult.GetValue(option) ?? default(T)!;
-    }
-
-    public static implicit operator int(CliOption<T> option)
-    {
-        if (ParseResultContainer.ParseResult is null)
-        {
-            throw new InvalidOperationException("Cannot retrieve the option value until parsing is completed.");
-        }
-
-        CliOption baseOption = option;
-        return ParseResultContainer.ParseResult.GetResult(baseOption)!.GetValueOrDefault<int>();
+        base.SetAction(result => action(new(result)));
     }
 }
 
-public class CliArgument<T> : System.CommandLine.CliArgument<T>
+public class ParseResult
 {
-    public CliArgument(string name) : base(name) { }
+    private System.CommandLine.ParseResult _result;
+    public ParseResult(System.CommandLine.ParseResult result) => _result = result;
 
-    public static implicit operator T(CliArgument<T> argument)
+    public OptionValueGetter this[CliOption option] => new(_result, option);
+    public ArgumentValueGetter this[CliArgument argument] => new(_result, argument);
+
+    public struct OptionValueGetter
     {
-        if (ParseResultContainer.ParseResult is null)
+        private System.CommandLine.ParseResult _result;
+        private CliOption _option;
+
+        internal OptionValueGetter(System.CommandLine.ParseResult result, CliOption option)
         {
-            throw new InvalidOperationException("Cannot retrieve the argument value until parsing is completed.");
+            _result = result;
+            _option = option;
         }
 
-        return ParseResultContainer.ParseResult.GetValue(argument) ?? default(T)!;
+        public static implicit operator bool(OptionValueGetter getter) => getter._result.GetValue((CliOption<bool>)getter._option);
+        public static implicit operator string(OptionValueGetter getter) => getter._result.GetValue((CliOption<string>)getter._option)!;
+        
+        public static implicit operator int(OptionValueGetter getter)
+        {
+            if (getter._option is CliOption<int?>)
+            {
+                return getter._result.GetValue((CliOption<int?>)getter._option)!.Value;
+            }
+
+            return getter._result.GetValue((CliOption<int>)getter._option);
+        }
+
+        public static implicit operator int?(OptionValueGetter getter) => getter._result.GetValue<int?>((CliOption<int?>)getter._option);
     }
-}
 
-public class CliRootCommand : System.CommandLine.CliRootCommand
-{
-    public ParseResult Parse(IEnumerable<string> args)
+    public struct ArgumentValueGetter
     {
-        ParseResultContainer.ParseResult = base.Parse(args.ToList());
+        private System.CommandLine.ParseResult _result;
+        private CliArgument _argument;
 
-        return ParseResultContainer.ParseResult;
+        internal ArgumentValueGetter(System.CommandLine.ParseResult result, CliArgument argument)
+        {
+            _result = result;
+            _argument = argument;
+        }
+
+        public static implicit operator string[](ArgumentValueGetter getter) => getter._result.GetValue<string[]>((CliArgument<string[]>)getter._argument)!;
     }
 }
