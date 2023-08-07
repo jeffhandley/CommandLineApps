@@ -12,6 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Single_Command", "1-Singl
 		1-Single_Command\a-ConsoleApp\1a-ConsoleApp-Single_Command.cs = 1-Single_Command\a-ConsoleApp\1a-ConsoleApp-Single_Command.cs
 		1-Single_Command\b-System.CommandLine\1b-System.CommandLine-Single_Command.cs = 1-Single_Command\b-System.CommandLine\1b-System.CommandLine-Single_Command.cs
 		1-Single_Command\c-CommandLineApp\1c-CommandLineApp-Single_Command.cs = 1-Single_Command\c-CommandLineApp\1c-CommandLineApp-Single_Command.cs
+		1-Single_Command\d-CommandLineApp-TypeInferred\1d-CommandLineApp-Single_Command-TypeInferred.cs = 1-Single_Command\d-CommandLineApp-TypeInferred\1d-CommandLineApp-Single_Command-TypeInferred.cs
+		1-Single_Command\e-CommandLineApp-TypeInferred-Indexer\1e-CommandLineApp-Single_Command-TypeInferred-Indexer.cs = 1-Single_Command\e-CommandLineApp-TypeInferred-Indexer\1e-CommandLineApp-Single_Command-TypeInferred-Indexer.cs
+		1-Single_Command\f-System.CommandLine-TypeInferred\1f-System.CommandLine-Single_Command-TypeInferred.cs = 1-Single_Command\f-System.CommandLine-TypeInferred\1f-System.CommandLine-Single_Command-TypeInferred.cs
 		CommandLineApp-Notes.md = CommandLineApp-Notes.md
 	EndProjectSection
 EndProject
@@ -86,7 +89,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1d-CommandLineApp-Single_Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1e-CommandLineApp-Single_Command-TypeInferred-Indexer", "1-Single_Command\e-CommandLineApp-TypeInferred-Indexer\1e-CommandLineApp-Single_Command-TypeInferred-Indexer.csproj", "{353CB84F-6BA0-446A-9746-68F5351BB586}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1f-System.CommandLine-Single_Command-TypeInferred", "1-Single_Command\f-System.CommandLine-TypeInferred\1f-System.CommandLine-Single_Command-TypeInferred.csproj", "{E8BF281B-8E07-4F6D-A316-D8234259C356}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1f-System.CommandLine-Single_Command-TypeInferred", "1-Single_Command\f-System.CommandLine-TypeInferred\1f-System.CommandLine-Single_Command-TypeInferred.csproj", "{E8BF281B-8E07-4F6D-A316-D8234259C356}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
