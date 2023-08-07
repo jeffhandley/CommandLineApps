@@ -31,8 +31,8 @@ public class ParseResult
     private System.CommandLine.ParseResult _result;
     public ParseResult(System.CommandLine.ParseResult result) => _result = result;
 
-    public T GetValue<T>(CliOption<T> option) => _result.GetValue(option)!;
-    public T GetValue<T>(CliArgument<T> argument) => _result.GetValue(argument)!;
+    public OptionValueGetter this[CliOption option] => new(_result.GetResult(option), option);
+    public ArgumentValueGetter this[CliArgument argument] => new(_result.GetResult(argument), argument);
 
     public struct OptionValueGetter
     {

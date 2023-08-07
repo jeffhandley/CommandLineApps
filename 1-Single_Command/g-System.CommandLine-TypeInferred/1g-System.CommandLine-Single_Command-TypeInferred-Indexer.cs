@@ -11,11 +11,11 @@ var dryrun = cli.AddOption<bool>("dry-run");
 
 var cmd = cli.Parse(args);
 
-if (cmd.GetValue(issue) is int issueNum)
+if ((int?)cmd[issue] is int issueNum)
 {
-    GitHubHelper.Labels.AddToIssue(cmd.GetValue(org), cmd.GetValue(repo), issueNum, cmd.GetValue(labels), cmd.GetValue(dryrun));
+    GitHubHelper.Labels.AddToIssue(cmd[org], cmd[repo], issueNum, (string[])cmd[labels], cmd[dryrun]);
 }
-else if (cmd.GetValue(pr) is int prNum)
+else if ((int?)cmd[pr] is int prNum)
 {
-    GitHubHelper.Labels.AddToPullRequest(cmd.GetValue(org), cmd.GetValue(repo), prNum, cmd.GetValue(labels), cmd.GetValue(dryrun));
+    GitHubHelper.Labels.AddToPullRequest(cmd[org], cmd[repo], prNum, (string[])cmd[labels], cmd[dryrun]);
 }
