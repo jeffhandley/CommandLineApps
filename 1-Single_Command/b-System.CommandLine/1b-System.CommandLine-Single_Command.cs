@@ -9,13 +9,6 @@ var labels = new CliArgument<IEnumerable<string>>("labels") { Arity = ArgumentAr
 var dryrun = new CliOption<bool>("--dry-run", "-d");
 
 var cli = new CliRootCommand { org, repo, issue, pr, labels, dryrun };
-cli.Validators.Add(result =>
-{
-    if (result.GetValue(issue) is null && result.GetValue(pr) is null)
-    {
-        result.AddError("Either --issue or --pr must be specified");
-    }
-});
 
 cli.SetAction(cmd =>
 {
